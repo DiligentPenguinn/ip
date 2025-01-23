@@ -23,7 +23,7 @@ public class DiligentPenguin {
         System.out.println(horizontalLines);
     }
 
-    public static void store(String userInput, String type) {
+    public static void store(String userInput, String type) throws ChatBotException {
         System.out.println(horizontalLines);
         System.out.println("Noted. I will write this down for you!");
         tasks.add(userInput, type);
@@ -38,10 +38,15 @@ public class DiligentPenguin {
         System.out.println(horizontalLines);
     }
 
-    public static void mark(int i) {
-        System.out.println("Noted! I'll mark task " + (i + 1) + " as done: ");
-        tasks.finish(i);
-        System.out.println(tasks.get(i).toString());
+    public static void mark(int i) throws ChatBotException {
+        try {
+            tasks.finish(i);
+            System.out.println("Noted! I'll mark task " + (i + 1) + " as done: ");
+            System.out.println(tasks.get(i).toString());
+        } catch (IndexOutOfBoundsException e) {
+            throw new ChatBotException("That's not a valid item index!");
+        }
+
     }
 
     public static void unmark(int i) {
@@ -50,37 +55,47 @@ public class DiligentPenguin {
         System.out.println(tasks.get(i).toString());
     }
 
+    public static void start() {
+        Scanner scanner = new Scanner(System.in);
+        greet();
+
+    }
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         DiligentPenguin.greet();
 
         while (true) {
             String userInput = scanner.nextLine();
-
-            if (Objects.equals(userInput, "bye")) {
-                DiligentPenguin.exit();
-                break;
-            } else if (Objects.equals(userInput, "list")) {
-                DiligentPenguin.list();
-                continue;
-                // Use of Regex below is adapted from a conversation with chatGPT
-            } else if (userInput.matches("mark \\d+")) {
-                int index = Integer.parseInt(userInput.substring(5)) - 1;
-                DiligentPenguin.mark(index);
-                continue;
-            } else if (userInput.matches("unmark \\d+")) {
-                int index = Integer.parseInt(userInput.substring(7)) - 1;
-                DiligentPenguin.unmark(index);
-                continue;
-            } else if (userInput.startsWith("todo")) {
-                String description = userInput.substring(5);
-                DiligentPenguin.store(description, "todo");
-            } else if (userInput.startsWith("deadline")) {
-                String description = userInput.substring(9);
-                DiligentPenguin.store(description, "deadline");
-            } else if (userInput.startsWith("event")) {
-                String description = userInput.substring(6);
-                DiligentPenguin.store(description, "event");
+            try {
+                if (Objects.equals(userInput, "bye")) {
+                    DiligentPenguin.exit();
+                    break;
+                } else if (Objects.equals(userInput, "list")) {
+                    DiligentPenguin.list();
+                    // Use of Regex below is adapted from a conversation with chatGPT
+                } else if (userInput.matches("mark \\d+")) {
+                    int index = Integer.parseInt(userInput.substring(5)) - 1;
+                    DiligentPenguin.mark(index);
+                } else if (userInput.matches("unmark \\d+")) {
+                    int index = Integer.parseInt(userInput.substring(7)) - 1;
+                    DiligentPenguin.unmark(index);
+                } else if (userInput.startsWith("todo ")) {
+                    String description = userInput.substring(5);
+                    DiligentPenguin.store(description, "todo");
+                } else if (userInput.startsWith("deadline ")) {
+                    String description = userInput.substring(9);
+                    DiligentPenguin.store(description, "deadline");
+                } else if (userInput.startsWith("event ")) {
+                    String description = userInput.substring(6);
+                    DiligentPenguin.store(description, "event");
+                } else {
+                    System.out.println("Uuh, I don't know what you mean");
+                }
+            } catch (Exception e) {
+                System.out.println("Error detected!");
+                System.out.println(e.getMessage());
+                System.out.println("You can try again!");
             }
         }
 

@@ -6,28 +6,48 @@ public class TaskList {
         this.list = new ArrayList<>();
     }
 
-    public void add(String item, String type) {
+    public void add(String item, String type) throws ChatBotException {
         Task task = new Task("");
-        // Below piece of code is inspired by a conversation with chatGPT
         if (type.equals("deadline")) {
+            if (!item.contains("/by")) {
+                throw new ChatBotException("For deadline command, format your command like this: \n"
+                        + "event <name> /by <deadline> \n");
+            }
+            // Below piece of code is inspired by a conversation with chatGPT
             int index = item.indexOf("/by");
 
             // Extract the part before "/by"
-            String name = item.substring(0, index);
+            String name = item.substring(0, index).trim();
 
             // Extract the part after "/by"
-            String deadline = item.substring(index + 3);
+            String deadline = item.substring(index + 3).trim();
+
+            if (name.isEmpty() || deadline.isEmpty()) {
+                throw new ChatBotException("Did you forget to specify name or deadline of the task?");
+            }
 
             task = new Deadline(name, deadline);
         } else if (type.equals("event")) {
+            if (!item.contains("/from") || !item.contains("/to")) {
+                throw new ChatBotException("For event command, format your command like this: \n"
+                        + "event <name> /from <startTime> /to <endTime> \n");
+            }
             int indexFrom = item.indexOf("/from");
             int indexTo = item.indexOf("/to");
 
-            String name = item.substring(0, indexFrom);
-            String startTime = item.substring(indexFrom + 5, indexTo);
-            String endTime = item.substring(indexTo + 3);
+            String name = item.substring(0, indexFrom).trim();
+            String startTime = item.substring(indexFrom + 5, indexTo).trim();
+            String endTime = item.substring(indexTo + 3).trim();
+
+            if (name.isEmpty() || startTime.isEmpty() || endTime.isEmpty()) {
+                throw new ChatBotException("Did you forget to specify name " +
+                        "or start time / end time of the task?");
+            }
             task = new Event(name, startTime, endTime);
         } else if (type.equals("todo")) {
+            if (item.trim().isEmpty()) {
+                throw new ChatBotException("Did you forget to specify name of the task?");
+            }
             task = new ToDo(item);
         }
         this.list.add(task);
