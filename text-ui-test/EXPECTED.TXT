@@ -2,6 +2,13 @@
 Hello there! My name is DiligentPenguin
 Tell me what you want to do!
 -----------------------------------------------
+Uuh, I don't know what you mean
+-----------------------------------------------
+Noted. I will write this down for you!
+Error detected!
+Did you forget to specify name or start time / end time of the task?
+You can try again!
+Uuh, I don't know what you mean
 -----------------------------------------------
 Noted. I will write this down for you!
 I have noted down a total of 1 tasks for you
@@ -17,8 +24,35 @@ I have noted down a total of 3 tasks for you
 -----------------------------------------------
 Here is the list of items I noted down
 1. [T][ ] homework
-2. [D][ ] homework  (by:  Saturday)
-3. [D][ ] go to class  (from:  10am  to:  12pm)
+2. [D][ ] homework (by: Saturday)
+3. [D][ ] go to class (from: 10am to: 12pm)
+
+-----------------------------------------------
+Noted! I'll mark task 1 as done:
+[T][X] homework
+-----------------------------------------------
+Here is the list of items I noted down
+1. [T][X] homework
+2. [D][ ] homework (by: Saturday)
+3. [D][ ] go to class (from: 10am to: 12pm)
+
+-----------------------------------------------
+Noted! I'll mark task 2 as done:
+[D][X] homework (by: Saturday)
+-----------------------------------------------
+Here is the list of items I noted down
+1. [T][X] homework
+2. [D][X] homework (by: Saturday)
+3. [D][ ] go to class (from: 10am to: 12pm)
+
+-----------------------------------------------
+Noted! I'll unmark task 1 as undone:
+[T][ ] homework
+-----------------------------------------------
+Here is the list of items I noted down
+1. [T][ ] homework
+2. [D][X] homework (by: Saturday)
+3. [D][ ] go to class (from: 10am to: 12pm)
 
 -----------------------------------------------
 -----------------------------------------------

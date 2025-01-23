@@ -1,3 +1,6 @@
+todo
+event CS2103T class /from 10am /to
+abcdefg
 todo homework
 deadline homework /by Saturday
 event go to class /from 10am /to 12pm
