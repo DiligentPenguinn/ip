@@ -110,6 +110,7 @@ public class DiligentPenguin {
                 System.out.println("Error detected!");
                 System.out.println(e.getMessage());
                 System.out.println("You can try again!");
+                System.out.println(horizontalLines);
             }
         }
 
