@@ -2,7 +2,7 @@ import java.util.Objects;
 import java.util.Scanner;
 
 public class DiligentPenguin {
-    static MyList list = new MyList();
+    static TaskList tasks = new TaskList();
     static String horizontalLines = "-----------------------------------------------";
     static String name = "DiligentPenguin";
     public static void greet() {
@@ -27,14 +27,20 @@ public class DiligentPenguin {
         System.out.println(horizontalLines);
         System.out.println("Noted. I will write this down for you!");
         System.out.println(horizontalLines);
-        list.add(userInput);
+        tasks.add(userInput);
     }
 
     public static void list() {
         System.out.println(horizontalLines);
         System.out.println("Here is the list of items I noted down");
-        System.out.println(list.toString());
+        System.out.println(tasks.toString());
         System.out.println(horizontalLines);
+    }
+
+    public static void mark(int i) {
+        System.out.println("Noted! I'll mark task " + (i + 1) + " as done: ");
+        tasks.finish(i);
+        System.out.println(tasks.get(i).toString());
     }
 
     public static void main(String[] args) {
