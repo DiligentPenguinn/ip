@@ -1,3 +1,6 @@
+import java.util.Objects;
+import java.util.Scanner;
+
 public class DiligentPenguin {
     static String horizontalLines = "-----------------------------------------------";
     static String name = "DiligentPenguin";
@@ -12,8 +15,24 @@ public class DiligentPenguin {
         System.out.println(horizontalLines);
     }
 
+    public static void echo(String userInput) {
+        System.out.println(userInput);
+    }
+
     public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
         DiligentPenguin.greet();
-        DiligentPenguin.exit();
+
+        while (true) {
+            String userInput = scanner.nextLine();
+
+            if (Objects.equals(userInput, "bye")) {
+                DiligentPenguin.exit();
+                break;
+            }
+
+            DiligentPenguin.echo(userInput);
+        }
+
     }
 }
