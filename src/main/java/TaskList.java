@@ -1,14 +1,17 @@
 import java.util.ArrayList;
 
 public class TaskList {
+    public enum TaskType {
+            TODO, DEADLINE, EVENT
+    }
     ArrayList<Task> list;
     public TaskList() {
         this.list = new ArrayList<>();
     }
 
-    public void add(String item, String type) throws ChatBotException {
+    public void add(String item, TaskType type) throws ChatBotException {
         Task task = new Task("");
-        if (type.equals("deadline")) {
+        if (type.equals(TaskType.DEADLINE)) {
             if (!item.contains("/by")) {
                 throw new ChatBotException("For deadline command, format your command like this: \n"
                         + "event <name> /by <deadline> \n");
@@ -27,7 +30,7 @@ public class TaskList {
             }
 
             task = new Deadline(name, deadline);
-        } else if (type.equals("event")) {
+        } else if (type.equals(TaskType.EVENT)) {
             if (!item.contains("/from") || !item.contains("/to")) {
                 throw new ChatBotException("For event command, format your command like this: \n"
                         + "event <name> /from <startTime> /to <endTime> \n");
@@ -44,7 +47,7 @@ public class TaskList {
                         "or start time / end time of the task?");
             }
             task = new Event(name, startTime, endTime);
-        } else if (type.equals("todo")) {
+        } else if (type.equals(TaskType.TODO)) {
             if (item.trim().isEmpty()) {
                 throw new ChatBotException("Did you forget to specify name of the task?");
             }

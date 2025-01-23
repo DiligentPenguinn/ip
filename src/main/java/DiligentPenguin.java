@@ -23,7 +23,7 @@ public class DiligentPenguin {
         System.out.println(horizontalLines);
     }
 
-    public static void store(String userInput, String type) throws ChatBotException {
+    public static void store(String userInput, TaskList.TaskType type) throws ChatBotException {
         System.out.println(horizontalLines);
         System.out.println("Noted. I will write this down for you!");
         tasks.add(userInput, type);
@@ -96,13 +96,13 @@ public class DiligentPenguin {
                     DiligentPenguin.delete(index);
                 } else if (userInput.startsWith("todo ")) {
                     String description = userInput.substring(5);
-                    DiligentPenguin.store(description, "todo");
+                    DiligentPenguin.store(description, TaskList.TaskType.TODO);
                 } else if (userInput.startsWith("deadline ")) {
                     String description = userInput.substring(9);
-                    DiligentPenguin.store(description, "deadline");
+                    DiligentPenguin.store(description, TaskList.TaskType.DEADLINE);
                 } else if (userInput.startsWith("event ")) {
                     String description = userInput.substring(6);
-                    DiligentPenguin.store(description, "event");
+                    DiligentPenguin.store(description, TaskList.TaskType.EVENT);
                 } else {
                     System.out.println("Uuh, I don't know what you mean");
                 }
