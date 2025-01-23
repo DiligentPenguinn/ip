@@ -53,6 +53,10 @@ public class TaskList {
         this.list.add(task);
     }
 
+    public void remove(int i) {
+        this.list.remove(i);
+    }
+
     public Task get(int i) {
         return this.list.get(i);
     }
