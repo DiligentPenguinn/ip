@@ -1,0 +1,11 @@
+todo homework
+deadline homework /by Saturday
+event go to class /from 10am /to 12pm
+list
+mark 1
+list
+mark 2
+list
+unmark 1
+list
+bye

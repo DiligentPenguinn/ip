@@ -1,7 +1,26 @@
-Hello from
- ____        _        
-|  _ \ _   _| | _____ 
-| | | | | | | |/ / _ \
-| |_| | |_| |   <  __/
-|____/ \__,_|_|\_\___|
+-----------------------------------------------
+Hello there! My name is DiligentPenguin
+Tell me what you want to do!
+-----------------------------------------------
+-----------------------------------------------
+Noted. I will write this down for you!
+I have noted down a total of 1 tasks for you
+-----------------------------------------------
+-----------------------------------------------
+Noted. I will write this down for you!
+I have noted down a total of 2 tasks for you
+-----------------------------------------------
+-----------------------------------------------
+Noted. I will write this down for you!
+I have noted down a total of 3 tasks for you
+-----------------------------------------------
+-----------------------------------------------
+Here is the list of items I noted down
+1. [T][ ] homework
+2. [D][ ] homework  (by:  Saturday)
+3. [D][ ] go to class  (from:  10am  to:  12pm)
 
+-----------------------------------------------
+-----------------------------------------------
+Bye bye. Come back to me soon!
+-----------------------------------------------
