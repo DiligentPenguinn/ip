@@ -43,6 +43,12 @@ public class DiligentPenguin {
         System.out.println(tasks.get(i).toString());
     }
 
+    public static void unmark(int i) {
+        System.out.println("Noted! I'll unmark task " + (i + 1) + " as undone: ");
+        tasks.unfinish(i);
+        System.out.println(tasks.get(i).toString());
+    }
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         DiligentPenguin.greet();
@@ -60,6 +66,10 @@ public class DiligentPenguin {
             } else if (userInput.matches("mark \\d+")) {
                 int index = Integer.parseInt(userInput.substring(5)) - 1;
                 DiligentPenguin.mark(index);
+                continue;
+            } else if (userInput.matches("unmark \\d+")) {
+                int index = Integer.parseInt(userInput.substring(7)) - 1;
+                DiligentPenguin.unmark(index);
                 continue;
             }
 

@@ -19,6 +19,10 @@ public class TaskList {
         this.list.get(i).setDone();
     }
 
+    public void unfinish(int i) {
+        this.list.get(i).setUnDone();
+    }
+
     @Override
     public String toString() {
         StringBuilder listString = new StringBuilder();

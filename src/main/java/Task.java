@@ -9,6 +9,10 @@ public class Task {
         this.isDone = true;
     }
 
+    public void setUnDone() {
+        this.isDone = false;
+    }
+
     @Override
     public String toString() {
         String mark = this.isDone ? "X" : " ";
