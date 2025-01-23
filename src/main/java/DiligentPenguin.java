@@ -56,6 +56,11 @@ public class DiligentPenguin {
             } else if (Objects.equals(userInput, "list")) {
                 DiligentPenguin.list();
                 continue;
+                // Use of Regex below is adapted from a conversation with chatGPT
+            } else if (userInput.matches("mark \\d+")) {
+                int index = Integer.parseInt(userInput.substring(5)) - 1;
+                DiligentPenguin.mark(index);
+                continue;
             }
 
             DiligentPenguin.store(userInput);
