@@ -45,6 +45,10 @@ public class TaskList {
         this.list.get(i).setUnDone();
     }
 
+    public int getSize() {
+        return this.list.size();
+    }
+
     @Override
     public String toString() {
         StringBuilder listString = new StringBuilder();

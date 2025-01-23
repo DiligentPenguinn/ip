@@ -26,8 +26,9 @@ public class DiligentPenguin {
     public static void store(String userInput, String type) {
         System.out.println(horizontalLines);
         System.out.println("Noted. I will write this down for you!");
-        System.out.println(horizontalLines);
         tasks.add(userInput, type);
+        System.out.printf("I have noted down a total of %d tasks for you \n", tasks.getSize());
+        System.out.println(horizontalLines);
     }
 
     public static void list() {
