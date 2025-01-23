@@ -23,11 +23,11 @@ public class DiligentPenguin {
         System.out.println(horizontalLines);
     }
 
-    public static void store(String userInput) {
+    public static void store(String userInput, String type) {
         System.out.println(horizontalLines);
         System.out.println("Noted. I will write this down for you!");
         System.out.println(horizontalLines);
-        tasks.add(userInput);
+        tasks.add(userInput, type);
     }
 
     public static void list() {
@@ -71,9 +71,16 @@ public class DiligentPenguin {
                 int index = Integer.parseInt(userInput.substring(7)) - 1;
                 DiligentPenguin.unmark(index);
                 continue;
+            } else if (userInput.startsWith("todo")) {
+                String description = userInput.substring(5);
+                DiligentPenguin.store(description, "todo");
+            } else if (userInput.startsWith("deadline")) {
+                String description = userInput.substring(9);
+                DiligentPenguin.store(description, "deadline");
+            } else if (userInput.startsWith("event")) {
+                String description = userInput.substring(6);
+                DiligentPenguin.store(description, "event");
             }
-
-            DiligentPenguin.store(userInput);
         }
 
     }
