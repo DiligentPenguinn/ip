@@ -6,8 +6,30 @@ public class TaskList {
         this.list = new ArrayList<>();
     }
 
-    public void add(String item) {
-        Task task = new Task(item);
+    public void add(String item, String type) {
+        Task task = new Task("");
+        // Below piece of code is inspired by a conversation with chatGPT
+        if (type.equals("deadline")) {
+            int index = item.indexOf("/by");
+
+            // Extract the part before "/by"
+            String name = item.substring(0, index);
+
+            // Extract the part after "/by"
+            String deadline = item.substring(index + 3);
+
+            task = new Deadline(name, deadline);
+        } else if (type.equals("event")) {
+            int indexFrom = item.indexOf("/from");
+            int indexTo = item.indexOf("/to");
+
+            String name = item.substring(0, indexFrom);
+            String startTime = item.substring(indexFrom + 5, indexTo);
+            String endTime = item.substring(indexTo + 3);
+            task = new Event(name, startTime, endTime);
+        } else if (type.equals("todo")) {
+            task = new ToDo(item);
+        }
         this.list.add(task);
     }
 

@@ -16,6 +16,6 @@ public class Task {
     @Override
     public String toString() {
         String mark = this.isDone ? "X" : " ";
-        return "[" + mark + "] " + this.name;
+        return String.format("[%s] %s", mark, this.name);
     }
 }
