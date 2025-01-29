@@ -7,7 +7,7 @@ import java.util.Scanner;
 public class DiligentPenguin {
     private final Storage storage;
     private final Ui ui;
-    static TaskList tasks = new TaskList();
+    private TaskList tasks = new TaskList();
     static String tasksDirectoryPath = "src/main/data/";
     static String tasksFilePath = tasksDirectoryPath + "tasks.txt";
 
@@ -17,6 +17,10 @@ public class DiligentPenguin {
         String filePath = directoryPath + fileName;
         this.storage = new Storage(directoryPath, filePath);
         this.ui = new Ui();
+    }
+
+    public TaskList getTasks() {
+        return this.tasks;
     }
 
     public void store(String userInput, TaskList.TaskType type) throws ChatBotException, DateTimeParseException {
@@ -66,40 +70,12 @@ public class DiligentPenguin {
             this.storage.createSavedDirectoryAndFile();
         }
 
-        while (true) {
+        Parser parser = new Parser();
+
+        while (!parser.isFinish) {
             String userInput = scanner.nextLine();
             try {
-                if (Objects.equals(userInput, "bye")) {
-                    ui.showExitMessage();
-                    break;
-                } else if (Objects.equals(userInput, "list")) {
-                    ui.showListMessage(tasks.toString());
-                    // Use of Regex below is adapted from a conversation with chatGPT
-                } else if (userInput.matches("mark \\d+")) {
-                    int index = Integer.parseInt(userInput.substring(5)) - 1;
-                    this.mark(index);
-                } else if (userInput.matches("unmark \\d+")) {
-                    int index = Integer.parseInt(userInput.substring(7)) - 1;
-                    this.unmark(index);
-                } else if (userInput.matches("delete \\d+")) {
-                    int index = Integer.parseInt(userInput.substring(7)) - 1;
-                    this.delete(index);
-//                    Three cases above can be combined
-                } else if (userInput.startsWith("todo ")) {
-                    String description = userInput.substring(5);
-                    this.store(description, TaskList.TaskType.TODO);
-                    this.storage.save(tasks);
-                } else if (userInput.startsWith("deadline ")) {
-                    String description = userInput.substring(9);
-                    this.store(description, TaskList.TaskType.DEADLINE);
-                    this.storage.save(tasks);
-                } else if (userInput.startsWith("event ")) {
-                    String description = userInput.substring(6);
-                    this.store(description, TaskList.TaskType.EVENT);
-                    this.storage.save(tasks);
-                } else {
-                    ui.showUnknownCommandMessage();
-                }
+                parser.parse(userInput, this, this.ui, this.storage);
             } catch (DateTimeParseException e) {
                 ui.showDatetimeError();
             } catch (Exception e) {
@@ -109,7 +85,7 @@ public class DiligentPenguin {
     }
 
     public static void main(String[] args) {
-        DiligentPenguin chatbot = new DiligentPenguin("src/main/data/","tasks.txt");
-        chatbot.run();
+        DiligentPenguin chatBot = new DiligentPenguin("src/main/data/","tasks.txt");
+        chatBot.run();
     }
 }
