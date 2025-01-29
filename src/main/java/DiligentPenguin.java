@@ -1,6 +1,5 @@
 import java.io.FileNotFoundException;
 import java.time.format.DateTimeParseException;
-import java.util.Objects;
 import java.util.Scanner;
 
 
@@ -8,8 +7,6 @@ public class DiligentPenguin {
     private final Storage storage;
     private final Ui ui;
     private TaskList tasks = new TaskList();
-    static String tasksDirectoryPath = "src/main/data/";
-    static String tasksFilePath = tasksDirectoryPath + "tasks.txt";
 
     static String name = "DiligentPenguin";
 
