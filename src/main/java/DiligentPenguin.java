@@ -1,5 +1,7 @@
 import javax.imageio.IIOException;
 import java.io.FileNotFoundException;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Scanner;
@@ -31,7 +33,7 @@ public class DiligentPenguin {
         System.out.println(horizontalLines);
     }
 
-    public void store(String userInput, TaskList.TaskType type) throws ChatBotException {
+    public void store(String userInput, TaskList.TaskType type) throws ChatBotException, DateTimeParseException {
         System.out.println(horizontalLines);
         System.out.println("Noted. I will write this down for you!");
         tasks.add(userInput, type);
@@ -76,7 +78,7 @@ public class DiligentPenguin {
         }
     }
 
-    private static Task readTask(String line) throws ChatBotException {
+    private static Task readTask(String line) throws ChatBotException, DateTimeParseException {
         Task task;
         String[] parts = line.split("\\|");
         String type = parts[0].trim();
@@ -94,13 +96,16 @@ public class DiligentPenguin {
             }
             return task;
         case "D":
-            task = new Deadline(description, deadline);
+            LocalDate formattedDeadline = LocalDate.parse(deadline, Task.inputFormatter);
+            task = new Deadline(description, formattedDeadline);
             if (isDone) {
                 task.setDone();
             }
             return task;
         case "E":
-            task = new Event(description, startTime, endTime);
+            LocalDate formattedStartTime = LocalDate.parse(startTime, Task.inputFormatter);
+            LocalDate formattedEndTime = LocalDate.parse(endTime, Task.inputFormatter);
+            task = new Event(description, formattedStartTime, formattedEndTime);
             if (isDone) {
                 task.setDone();
             }
@@ -113,8 +118,15 @@ public class DiligentPenguin {
     public void loadTaskList() throws ChatBotException, FileNotFoundException {
         File file = new File(tasksFilePath);
         Scanner scanner = new Scanner(file);
+        String taskDescription = "";
         while (scanner.hasNext()) {
-            tasks.add(DiligentPenguin.readTask(scanner.nextLine()));
+            try {
+                taskDescription = scanner.nextLine();
+                tasks.add(DiligentPenguin.readTask(taskDescription));
+            } catch (DateTimeParseException e) {
+                System.out.println("Oops! There's something wrong with the datetime format of this line: ");
+                System.out.println(taskDescription);
+            }
         }
         if (tasks.isEmpty()) {
             throw new ChatBotException("No data found!");
@@ -161,6 +173,7 @@ public class DiligentPenguin {
         chatBot.greet();
         try {
             chatBot.loadTaskList();
+            chatBot.save();
             System.out.println("I have successfully loaded previous task list for you!");
             chatBot.list();
         } catch (ChatBotException e) {
@@ -208,8 +221,11 @@ public class DiligentPenguin {
                 } else {
                     System.out.println("Uuh, I don't know what you mean");
                 }
+            } catch (DateTimeParseException e) {
+                System.out.println("Oops! There seems to be an error");
+                System.out.println("The date time format for input is: dd/MM/yyyy. Please try again!");
             } catch (Exception e) {
-                System.out.println("Error detected!");
+                System.out.println("Oops! There seems to be an error");
                 System.out.println(e.getMessage());
                 System.out.println("You can try again!");
                 System.out.println(horizontalLines);

@@ -1,4 +1,6 @@
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.time.LocalDate;
 
 public class TaskList {
     public enum TaskType {
@@ -13,14 +15,14 @@ public class TaskList {
         this.list.add(task);
     }
 
-    public void add(String item, TaskType type) throws ChatBotException {
+    public void add(String item, TaskType type) throws ChatBotException, DateTimeParseException {
         Task task = new Task("");
         if (type.equals(TaskType.DEADLINE)) {
             if (!item.contains("/by")) {
                 throw new ChatBotException("For deadline command, format your command like this: \n"
                         + "event <name> /by <deadline> \n");
             }
-            // Below piece of code is inspired by a conversation with chatGPT
+            // The piece of code in between is inspired by a conversation with chatGPT
             int index = item.indexOf("/by");
 
             // Extract the part before "/by"
@@ -28,12 +30,14 @@ public class TaskList {
 
             // Extract the part after "/by"
             String deadline = item.substring(index + 3).trim();
+            // The piece of code in between is inspired by a conversation with chatGPT
 
             if (name.isEmpty() || deadline.isEmpty()) {
                 throw new ChatBotException("Did you forget to specify name or deadline of the task?");
             }
 
-            task = new Deadline(name, deadline);
+            LocalDate formattedDeadline = LocalDate.parse(deadline, Task.inputFormatter);
+            task = new Deadline(name, formattedDeadline);
         } else if (type.equals(TaskType.EVENT)) {
             if (!item.contains("/from") || !item.contains("/to")) {
                 throw new ChatBotException("For event command, format your command like this: \n"
@@ -50,7 +54,10 @@ public class TaskList {
                 throw new ChatBotException("Did you forget to specify name " +
                         "or start time / end time of the task?");
             }
-            task = new Event(name, startTime, endTime);
+            LocalDate formattedStartTime = LocalDate.parse(startTime, Task.inputFormatter);
+            LocalDate formattedEndTime = LocalDate.parse(endTime, Task.inputFormatter);
+
+            task = new Event(name, formattedStartTime, formattedEndTime);
         } else if (type.equals(TaskType.TODO)) {
             if (item.trim().isEmpty()) {
                 throw new ChatBotException("Did you forget to specify name of the task?");
