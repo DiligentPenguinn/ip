@@ -10,11 +10,18 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class DiligentPenguin {
+    public Storage storage;
     static TaskList tasks = new TaskList();
     static String tasksDirectoryPath = "src/main/data/";
     static String tasksFilePath = tasksDirectoryPath + "tasks.txt";
     static String horizontalLines = "-----------------------------------------------";
     static String name = "DiligentPenguin";
+
+    public DiligentPenguin(String directoryPath, String fileName) {
+        String filePath = directoryPath + fileName;
+        this.storage = new Storage(directoryPath, filePath);
+    }
+
     public void greet() {
         System.out.println(horizontalLines);
         System.out.printf("Hello there! My name is %s \nTell me what you want to do! \n", name);
@@ -48,19 +55,7 @@ public class DiligentPenguin {
         System.out.println(horizontalLines);
     }
 
-    public void save() throws ChatBotException {
-        try {
-            FileWriter fw = new FileWriter(tasksFilePath);
-            ArrayList<Task> arrayTask = tasks.getAllTasks();
-            for (Task task: arrayTask) {
-                fw.write(task.toSavedString() + "\n");
-            }
-            fw.close();
-        } catch (IOException e) {
-            throw new ChatBotException("Oops! Something went wrong, I cannot save the tasks list! "
-                    + e.getMessage());
-        }
-    }
+
 
     public void createSavedDirectoryAndFile() {
         File directory = new File(tasksDirectoryPath);
@@ -164,18 +159,16 @@ public class DiligentPenguin {
         } catch (IndexOutOfBoundsException e) {
             throw new ChatBotException("That's not a valid item index!");
         }
-
     }
 
-    public static void main(String[] args) {
+    public void run() {
         Scanner scanner = new Scanner(System.in);
-        DiligentPenguin chatBot = new DiligentPenguin();
-        chatBot.greet();
+        this.greet();
         try {
-            chatBot.loadTaskList();
-            chatBot.save();
+            this.loadTaskList();
+            this.storage.save(tasks);
             System.out.println("I have successfully loaded previous task list for you!");
-            chatBot.list();
+            this.list();
         } catch (ChatBotException e) {
             System.out.println("It seems that you have no prior task list stored.");
             System.out.println("I will start with a blank new task list!");
@@ -183,7 +176,7 @@ public class DiligentPenguin {
         } catch (FileNotFoundException e) {
             System.out.println("Oops! I couldn't find the data file of previous tasks");
             System.out.println("I will start with a blank new task list!");
-            chatBot.createSavedDirectoryAndFile();
+            this.createSavedDirectoryAndFile();
             System.out.println(horizontalLines);
         }
 
@@ -191,33 +184,33 @@ public class DiligentPenguin {
             String userInput = scanner.nextLine();
             try {
                 if (Objects.equals(userInput, "bye")) {
-                    chatBot.exit();
+                    this.exit();
                     break;
                 } else if (Objects.equals(userInput, "list")) {
-                    chatBot.list();
+                    this.list();
                     // Use of Regex below is adapted from a conversation with chatGPT
                 } else if (userInput.matches("mark \\d+")) {
                     int index = Integer.parseInt(userInput.substring(5)) - 1;
-                    chatBot.mark(index);
+                    this.mark(index);
                 } else if (userInput.matches("unmark \\d+")) {
                     int index = Integer.parseInt(userInput.substring(7)) - 1;
-                    chatBot.unmark(index);
+                    this.unmark(index);
                 } else if (userInput.matches("delete \\d+")) {
                     int index = Integer.parseInt(userInput.substring(7)) - 1;
-                    chatBot.delete(index);
+                    this.delete(index);
 //                    Three cases above can be combined
                 } else if (userInput.startsWith("todo ")) {
                     String description = userInput.substring(5);
-                    chatBot.store(description, TaskList.TaskType.TODO);
-                    chatBot.save();
+                    this.store(description, TaskList.TaskType.TODO);
+                    this.storage.save(tasks);
                 } else if (userInput.startsWith("deadline ")) {
                     String description = userInput.substring(9);
-                    chatBot.store(description, TaskList.TaskType.DEADLINE);
-                    chatBot.save();
+                    this.store(description, TaskList.TaskType.DEADLINE);
+                    this.storage.save(tasks);
                 } else if (userInput.startsWith("event ")) {
                     String description = userInput.substring(6);
-                    chatBot.store(description, TaskList.TaskType.EVENT);
-                    chatBot.save();
+                    this.store(description, TaskList.TaskType.EVENT);
+                    this.storage.save(tasks);
                 } else {
                     System.out.println("Uuh, I don't know what you mean");
                 }
@@ -231,6 +224,10 @@ public class DiligentPenguin {
                 System.out.println(horizontalLines);
             }
         }
+    }
 
+    public static void main(String[] args) {
+        DiligentPenguin chatbot = new DiligentPenguin("src/main/data/","tasks.txt");
+        chatbot.run();
     }
 }
