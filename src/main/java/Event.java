@@ -11,7 +11,7 @@ public class Event extends Task {
     @Override
     public String toString() {
         String mark = this.isDone ? "X" : " ";
-        return String.format("[D][%s] %s (from: %s to: %s)",
+        return String.format("[E][%s] %s (from: %s to: %s)",
                 mark, this.name, this.startTime, this.endTime);
     }
 }
