@@ -1,8 +1,15 @@
+import javax.imageio.IIOException;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Scanner;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class DiligentPenguin {
     static TaskList tasks = new TaskList();
+    static String tasksFilePath = "src/main/data/tasks.txt";
     static String horizontalLines = "-----------------------------------------------";
     static String name = "DiligentPenguin";
     public void greet() {
@@ -36,6 +43,20 @@ public class DiligentPenguin {
         System.out.println("Here is the list of items I noted down");
         System.out.println(tasks.toString());
         System.out.println(horizontalLines);
+    }
+
+    public void save() throws ChatBotException {
+        try {
+            FileWriter fw = new FileWriter(tasksFilePath);
+            ArrayList<Task> arrayTask = tasks.getAllTasks();
+            for (Task task: arrayTask) {
+                fw.write(task.toSavedString() + "\n");
+            }
+            fw.close();
+        } catch (IOException e) {
+            throw new ChatBotException("Oops! Something went wrong, I cannot save the tasks list! "
+                    + e.getMessage());
+        }
     }
 
     public void mark(int i) throws ChatBotException {
@@ -95,15 +116,19 @@ public class DiligentPenguin {
                 } else if (userInput.matches("delete \\d+")) {
                     int index = Integer.parseInt(userInput.substring(7)) - 1;
                     chatBot.delete(index);
+//                    Three cases above can be combined
                 } else if (userInput.startsWith("todo ")) {
                     String description = userInput.substring(5);
                     chatBot.store(description, TaskList.TaskType.TODO);
+                    chatBot.save();
                 } else if (userInput.startsWith("deadline ")) {
                     String description = userInput.substring(9);
                     chatBot.store(description, TaskList.TaskType.DEADLINE);
+                    chatBot.save();
                 } else if (userInput.startsWith("event ")) {
                     String description = userInput.substring(6);
                     chatBot.store(description, TaskList.TaskType.EVENT);
+                    chatBot.save();
                 } else {
                     System.out.println("Uuh, I don't know what you mean");
                 }

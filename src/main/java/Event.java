@@ -4,6 +4,7 @@ public class Event extends Task {
 
     public Event(String name, String startTime, String endTime) {
         super(name);
+        this.type = "E";
         this.startTime = startTime;
         this.endTime = endTime;
     }
@@ -11,7 +12,14 @@ public class Event extends Task {
     @Override
     public String toString() {
         String mark = this.isDone ? "X" : " ";
-        return String.format("[E][%s] %s (from: %s to: %s)",
-                mark, this.name, this.startTime, this.endTime);
+        return String.format("[%s][%s] %s (from: %s to: %s)",
+                this.type, mark, this.name, this.startTime, this.endTime);
+    }
+
+    @Override
+    public String toSavedString() {
+        String mark = this.isDone ? "X" : " ";
+        return String.format("%s | %s | %s | %s | %s",
+                this.type, mark, this.name, this.startTime, this.endTime);
     }
 }
