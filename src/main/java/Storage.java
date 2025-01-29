@@ -84,4 +84,20 @@ public class Storage {
             throw new ChatBotException("No data found!");
         }
     }
+
+    public void createSavedDirectoryAndFile() {
+        File directory = new File(this.directoryPath);
+        if (!directory.exists()) {
+            directory.mkdirs();
+        }
+
+        File file = new File(this.filePath);
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                System.out.println("Oops! Something went wrong!");
+            }
+        }
+    }
 }
