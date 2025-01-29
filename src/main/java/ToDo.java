@@ -13,6 +13,6 @@ public class ToDo extends Task {
     @Override
     public String toSavedString() {
         String mark = this.isDone ? "X" : " ";
-        return String.format("%s | %d | %s", this.type, this.isDone, this.name);
+        return String.format("%s | %s | %s", this.type, mark, this.name);
     }
 }

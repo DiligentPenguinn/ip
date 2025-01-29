@@ -64,6 +64,10 @@ public class TaskList {
         this.list.remove(i);
     }
 
+    public Boolean isEmpty() {
+        return this.list.isEmpty();
+    }
+
     public Task get(int i) {
         return this.list.get(i);
     }
