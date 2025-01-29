@@ -9,6 +9,10 @@ public class TaskList {
         this.list = new ArrayList<>();
     }
 
+    public void add(Task task) {
+        this.list.add(task);
+    }
+
     public void add(String item, TaskType type) throws ChatBotException {
         Task task = new Task("");
         if (type.equals(TaskType.DEADLINE)) {
@@ -60,6 +64,10 @@ public class TaskList {
         this.list.remove(i);
     }
 
+    public Boolean isEmpty() {
+        return this.list.isEmpty();
+    }
+
     public Task get(int i) {
         return this.list.get(i);
     }
@@ -74,6 +82,10 @@ public class TaskList {
 
     public int getSize() {
         return this.list.size();
+    }
+
+    public ArrayList<Task> getAllTasks() {
+        return this.list;
     }
 
     @Override
