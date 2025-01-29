@@ -5,25 +5,25 @@ public class DiligentPenguin {
     static TaskList tasks = new TaskList();
     static String horizontalLines = "-----------------------------------------------";
     static String name = "DiligentPenguin";
-    public static void greet() {
+    public void greet() {
         System.out.println(horizontalLines);
         System.out.printf("Hello there! My name is %s \nTell me what you want to do! \n", name);
         System.out.println(horizontalLines);
     }
 
-    public static void exit() {
+    public void exit() {
         System.out.println(horizontalLines);
         System.out.println("Bye bye. Come back to me soon!");
         System.out.println(horizontalLines);
     }
 
-    public static void echo(String userInput) {
+    public void echo(String userInput) {
         System.out.println(horizontalLines);
         System.out.println(userInput);
         System.out.println(horizontalLines);
     }
 
-    public static void store(String userInput, TaskList.TaskType type) throws ChatBotException {
+    public void store(String userInput, TaskList.TaskType type) throws ChatBotException {
         System.out.println(horizontalLines);
         System.out.println("Noted. I will write this down for you!");
         tasks.add(userInput, type);
@@ -31,14 +31,14 @@ public class DiligentPenguin {
         System.out.println(horizontalLines);
     }
 
-    public static void list() {
+    public void list() {
         System.out.println(horizontalLines);
         System.out.println("Here is the list of items I noted down");
         System.out.println(tasks.toString());
         System.out.println(horizontalLines);
     }
 
-    public static void mark(int i) throws ChatBotException {
+    public void mark(int i) throws ChatBotException {
         try {
             tasks.finish(i);
             System.out.println("Noted! I'll mark task " + (i + 1) + " as done: ");
@@ -49,7 +49,7 @@ public class DiligentPenguin {
 
     }
 
-    public static void unmark(int i) throws ChatBotException {
+    public void unmark(int i) throws ChatBotException {
         try {
             System.out.println("Noted! I'll unmark task " + (i + 1) + " as undone: ");
             tasks.unfinish(i);
@@ -60,7 +60,7 @@ public class DiligentPenguin {
 
     }
 
-    public static void delete(int i) throws ChatBotException {
+    public void delete(int i) throws ChatBotException {
         try {
             System.out.println("Noted! I'll delete task " + (i + 1) + " from the list: ");
             Task task = tasks.get(i);
@@ -74,35 +74,36 @@ public class DiligentPenguin {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        DiligentPenguin.greet();
+        DiligentPenguin chatBot = new DiligentPenguin();
+        chatBot.greet();
 
         while (true) {
             String userInput = scanner.nextLine();
             try {
                 if (Objects.equals(userInput, "bye")) {
-                    DiligentPenguin.exit();
+                    chatBot.exit();
                     break;
                 } else if (Objects.equals(userInput, "list")) {
-                    DiligentPenguin.list();
+                    chatBot.list();
                     // Use of Regex below is adapted from a conversation with chatGPT
                 } else if (userInput.matches("mark \\d+")) {
                     int index = Integer.parseInt(userInput.substring(5)) - 1;
-                    DiligentPenguin.mark(index);
+                    chatBot.mark(index);
                 } else if (userInput.matches("unmark \\d+")) {
                     int index = Integer.parseInt(userInput.substring(7)) - 1;
-                    DiligentPenguin.unmark(index);
+                    chatBot.unmark(index);
                 } else if (userInput.matches("delete \\d+")) {
                     int index = Integer.parseInt(userInput.substring(7)) - 1;
-                    DiligentPenguin.delete(index);
+                    chatBot.delete(index);
                 } else if (userInput.startsWith("todo ")) {
                     String description = userInput.substring(5);
-                    DiligentPenguin.store(description, TaskList.TaskType.TODO);
+                    chatBot.store(description, TaskList.TaskType.TODO);
                 } else if (userInput.startsWith("deadline ")) {
                     String description = userInput.substring(9);
-                    DiligentPenguin.store(description, TaskList.TaskType.DEADLINE);
+                    chatBot.store(description, TaskList.TaskType.DEADLINE);
                 } else if (userInput.startsWith("event ")) {
                     String description = userInput.substring(6);
-                    DiligentPenguin.store(description, TaskList.TaskType.EVENT);
+                    chatBot.store(description, TaskList.TaskType.EVENT);
                 } else {
                     System.out.println("Uuh, I don't know what you mean");
                 }
