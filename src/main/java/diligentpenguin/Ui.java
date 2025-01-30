@@ -7,6 +7,7 @@ package diligentpenguin;
 public class Ui {
     static String horizontalLines = "-----------------------------------------------";
 
+
     /**
      * Displays a greeting message when the chatbot starts
      * @param name Name of the chatbot

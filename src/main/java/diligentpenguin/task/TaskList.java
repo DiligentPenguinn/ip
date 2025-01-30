@@ -1,18 +1,17 @@
 package diligentpenguin.task;
-import diligentpenguin.ChatBotException;
 
+import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
-import java.time.LocalDate;
+
+import diligentpenguin.ChatBotException;
 
 /**
  * Represents a list of <code>Task</code> objects.
  */
 public class TaskList {
-    public enum TaskType {
-            TODO, DEADLINE, EVENT
-    }
     ArrayList<Task> list;
+
     public TaskList() {
         this.list = new ArrayList<>();
     }
@@ -152,5 +151,9 @@ public class TaskList {
             listString.append(i + 1).append(". ").append(list.get(i)).append("\n");
         }
         return listString.toString();
+    }
+
+    public enum TaskType {
+        TODO, DEADLINE, EVENT
     }
 }

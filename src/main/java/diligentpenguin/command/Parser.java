@@ -1,11 +1,12 @@
 package diligentpenguin.command;
+
+import java.util.Objects;
+
 import diligentpenguin.ChatBotException;
 import diligentpenguin.DiligentPenguin;
 import diligentpenguin.Storage;
 import diligentpenguin.Ui;
 import diligentpenguin.task.TaskList;
-
-import java.util.Objects;
 
 /**
  * Handles user's commands for chatbot.
@@ -13,6 +14,7 @@ import java.util.Objects;
  */
 public class Parser {
     public Boolean isFinish = false;
+
 
     /**
      * Parse and execute the user command

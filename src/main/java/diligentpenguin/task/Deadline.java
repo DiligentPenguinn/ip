@@ -1,4 +1,5 @@
 package diligentpenguin.task;
+
 import java.time.LocalDate;
 
 /**
@@ -7,6 +8,7 @@ import java.time.LocalDate;
  */
 public class Deadline extends Task {
     LocalDate deadline;
+
     public Deadline(String name, LocalDate deadline) {
         super(name);
         this.type = "D";
