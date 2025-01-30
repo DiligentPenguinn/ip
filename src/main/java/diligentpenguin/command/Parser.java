@@ -26,6 +26,9 @@ public class Parser {
         } else if (command.matches("delete \\d+")) {
             int index = Integer.parseInt(command.substring(7)) - 1;
             chatBot.delete(index);
+        } else if (command.startsWith("find ")) {
+            String keyword = command.substring(5);
+            chatBot.find(keyword);
 //                    Three cases above can be combined
         } else if (command.startsWith("todo ")) {
             String description = command.substring(5);

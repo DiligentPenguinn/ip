@@ -1,5 +1,7 @@
 package diligentpenguin;
 
+import diligentpenguin.task.TaskList;
+
 public class Ui {
     static String horizontalLines = "-----------------------------------------------";
     public void showGreetMessage(String name) {
@@ -48,9 +50,19 @@ public class Ui {
         this.showListMessage(tasks);
     }
 
+    public void showMatchingTasks(String tasks) {
+        System.out.println("I have found tasks matching your description!");
+        System.out.println(tasks);
+    }
+
     public void showNoDataMessage() {
         System.out.println("It seems that you have no prior task list stored.");
         System.out.println("I will start with a blank new task list!");
+        System.out.println(horizontalLines);
+    }
+
+    public void showNoTasksFoundMessage() {
+        System.out.println("It seems that there's no tasks that match your description!");
         System.out.println(horizontalLines);
     }
 

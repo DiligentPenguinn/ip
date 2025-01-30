@@ -70,6 +70,16 @@ public class TaskList {
         this.list.add(task);
     }
 
+    public TaskList find(String keyword) {
+        TaskList filteredTasks = new TaskList();
+        for (Task task: this.list) {
+            if (task.getName().contains(keyword)) {
+                filteredTasks.add(task);
+            }
+        }
+        return filteredTasks;
+    }
+
     public void remove(int i) {
         this.list.remove(i);
     }
