@@ -38,6 +38,10 @@ public class Task {
         return this.type;
     }
 
+    public String getName() {
+        return this.name;
+    }
+
     /**
      * @return formatted string for printing purposes
      */

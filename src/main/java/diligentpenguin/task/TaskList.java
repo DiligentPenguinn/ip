@@ -85,6 +85,16 @@ public class TaskList {
         this.list.add(task);
     }
 
+    public TaskList find(String keyword) {
+        TaskList filteredTasks = new TaskList();
+        for (Task task: this.list) {
+            if (task.getName().contains(keyword)) {
+                filteredTasks.add(task);
+            }
+        }
+        return filteredTasks;
+    }
+
     /**
      * Remove a task from the list
      * @param i Index of task to remove

@@ -99,6 +99,15 @@ public class DiligentPenguin {
         }
     }
 
+    public void find(String keyword) {
+        TaskList filteredTasks = this.tasks.find(keyword);
+        if (filteredTasks.isEmpty()) {
+            ui.showNoTasksFoundMessage();
+        } else {
+            ui.showMatchingTasks(filteredTasks.toString());
+        }
+    }
+
     /**
      * Run the chatbot, handle user inputs and responses.
      */
