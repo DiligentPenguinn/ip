@@ -35,8 +35,10 @@ public class TaskList {
         Task task = new Task("");
         if (type.equals(TaskType.DEADLINE)) {
             if (!item.contains("/by")) {
-                throw new ChatBotException("For deadline command, format your command like this: \n"
-                        + "event <name> /by <deadline> \n");
+                throw new ChatBotException("""
+                        For deadline command, format your command like this:\s
+                        event <name> /by <deadline>\s
+                        """);
             }
             // The piece of code in between is inspired by a conversation with chatGPT
             int index = item.indexOf("/by");

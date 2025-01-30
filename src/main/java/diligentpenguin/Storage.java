@@ -21,8 +21,8 @@ import diligentpenguin.task.ToDo;
  * handles loading and saving of task data.
  */
 public class Storage {
-    String filePath = "";
-    String directoryPath = "";
+    String filePath;
+    String directoryPath;
 
     public Storage(String directoryPath, String filePath) {
         this.filePath = filePath;
