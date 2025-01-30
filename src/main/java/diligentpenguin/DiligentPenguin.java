@@ -7,7 +7,10 @@ import java.io.FileNotFoundException;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
-
+/**
+ * Represents the chatbot.
+ * A <code>DiligentPenguin</code> object handles user input, manage tasks, storages and responses
+ */
 public class DiligentPenguin {
     private final Storage storage;
     private final Ui ui;
@@ -15,21 +18,42 @@ public class DiligentPenguin {
 
     static String name = "DiligentPenguin";
 
+    /**
+     * Construct a new <code>DiligentPenguin</code> chatbot.
+     * @param directoryPath Directory path where task data is stored
+     * @param fileName Name of the file where task data is stored
+     */
     public DiligentPenguin(String directoryPath, String fileName) {
         String filePath = directoryPath + fileName;
         this.storage = new Storage(directoryPath, filePath);
         this.ui = new Ui();
     }
 
+    /**
+     * Return the tasks noted by the chatbot
+     * @return <code>TaskList</code> of tasks
+     */
     public TaskList getTasks() {
         return this.tasks;
     }
 
+    /**
+     * Store the task into task list
+     * @param userInput Description of the task to store
+     * @param type Type of the task to store
+     * @throws ChatBotException If the task format is incorrect
+     * @throws DateTimeParseException If the task datetime format is incorrect
+     */
     public void store(String userInput, TaskList.TaskType type) throws ChatBotException, DateTimeParseException {
         tasks.add(userInput, type);
         ui.showStoreMessage(tasks.getSize());
     }
 
+    /**
+     * Mark a task as completed by index
+     * @param i Index of task to mark
+     * @throws ChatBotException If the index is out of bound
+     */
     public void mark(int i) throws ChatBotException {
         try {
             tasks.finish(i);
@@ -39,6 +63,11 @@ public class DiligentPenguin {
         }
     }
 
+    /**
+     * Mark a task as uncompleted by index
+     * @param i Index of task to mark
+     * @throws ChatBotException If the index is out of bound
+     */
     public void unmark(int i) throws ChatBotException {
         try {
             tasks.unfinish(i);
@@ -48,6 +77,11 @@ public class DiligentPenguin {
         }
     }
 
+    /**
+     * Delete a task by index
+     * @param i Index of the task to delete
+     * @throws ChatBotException If the index is out of bound
+     */
     public void delete(int i) throws ChatBotException {
         try {
             Task task = tasks.get(i);
@@ -58,6 +92,9 @@ public class DiligentPenguin {
         }
     }
 
+    /**
+     * Run the chatbot, handle user inputs and responses.
+     */
     public void run() {
         Scanner scanner = new Scanner(System.in);
         this.ui.showGreetMessage(name);

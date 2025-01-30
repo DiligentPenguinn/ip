@@ -1,6 +1,11 @@
 package diligentpenguin.task;
 import java.time.LocalDate;
 
+/**
+ * Represent a task with specific start time and end time.
+ * In addition to <code>Task</code> object's attributes, a <code>Event</code> object has
+ * a start time and end time.
+ */
 public class Event extends Task {
     LocalDate startTime;
     LocalDate endTime;

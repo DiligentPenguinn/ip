@@ -7,8 +7,21 @@ import diligentpenguin.task.TaskList;
 
 import java.util.Objects;
 
+/**
+ * Handles user's commands for chatbot.
+ * A <code>Parser</code> object takes in user command and executes corresponding chatbot operations
+ */
 public class Parser {
     public Boolean isFinish = false;
+
+    /**
+     * Parse and execute the user command
+     * @param command Command to parse and execute
+     * @param chatBot Chatbot to execute command on
+     * @param ui <code>Ui</code> object corresponds to the chatbot
+     * @param storage <code>Storage</code> object corresponds to the chatbot
+     * @throws ChatBotException If error occurs while parsing and executing
+     */
     public void parse(String command, DiligentPenguin chatBot, Ui ui, Storage storage)
             throws ChatBotException {
         if (Objects.equals(command, "bye")) {

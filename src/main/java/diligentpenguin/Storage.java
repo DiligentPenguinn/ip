@@ -10,15 +10,30 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * Handles data storage operations for chatbot.
+ * A <code>Storage</code> object creates directory and file for task data,
+ * handles loading and saving of task data.
+ */
 public class Storage {
     String filePath = "";
     String directoryPath = "";
 
+    /**
+     * Construct the <code>Storage</code> object with directory and file path
+     * @param directoryPath Directory where data is stored
+     * @param filePath File path where data is stored
+     */
     public Storage(String directoryPath, String filePath) {
         this.filePath = filePath;
         this.directoryPath = directoryPath;
     }
 
+    /**
+     * Save tasks into data task file
+     * @param tasks Tasks to save
+     * @throws ChatBotException If error occurs while saving
+     */
     public void save(TaskList tasks) throws ChatBotException {
         try {
             FileWriter fw = new FileWriter(this.filePath);
@@ -33,6 +48,13 @@ public class Storage {
         }
     }
 
+    /**
+     * Read a task from its description
+     * @param line Description of task to read
+     * @return The <code>Task</code> object
+     * @throws ChatBotException If description format is incorrect
+     * @throws DateTimeParseException If description datetime format is incorrect
+     */
     private static Task readTask(String line) throws ChatBotException, DateTimeParseException {
         Task task;
         String[] parts = line.split("\\|");
@@ -70,6 +92,12 @@ public class Storage {
         }
     }
 
+    /**
+     * Load tasks from saved file
+     * @param tasks Task to load
+     * @throws ChatBotException If no data is found
+     * @throws FileNotFoundException If saved file is not found
+     */
     public void loadTaskList(TaskList tasks) throws ChatBotException, FileNotFoundException {
         File file = new File(this.filePath);
         Scanner scanner = new Scanner(file);
@@ -88,6 +116,9 @@ public class Storage {
         }
     }
 
+    /**
+     * Create a directory and file for saving task data if they don't exist
+     */
     public void createSavedDirectoryAndFile() {
         File directory = new File(this.directoryPath);
         if (!directory.exists()) {
