@@ -1,5 +1,4 @@
 package diligentpenguin;
-import diligentpenguin.task.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -10,6 +9,12 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import diligentpenguin.task.Deadline;
+import diligentpenguin.task.Event;
+import diligentpenguin.task.Task;
+import diligentpenguin.task.TaskList;
+import diligentpenguin.task.ToDo;
+
 public class Storage {
     String filePath = "";
     String directoryPath = "";
@@ -17,20 +22,6 @@ public class Storage {
     public Storage(String directoryPath, String filePath) {
         this.filePath = filePath;
         this.directoryPath = directoryPath;
-    }
-
-    public void save(TaskList tasks) throws ChatBotException {
-        try {
-            FileWriter fw = new FileWriter(this.filePath);
-            ArrayList<Task> arrayTask = tasks.getAllTasks();
-            for (Task task: arrayTask) {
-                fw.write(task.toSavedString() + "\n");
-            }
-            fw.close();
-        } catch (IOException e) {
-            throw new ChatBotException("Oops! Something went wrong, I cannot save the tasks list! "
-                    + e.getMessage());
-        }
     }
 
     private static Task readTask(String line) throws ChatBotException, DateTimeParseException {
@@ -44,29 +35,43 @@ public class Storage {
         String endTime = (parts.length == 5) ? parts[4].trim() : "";
         // The above code is inspired by a conversation with chatGPT
         switch (type) {
-            case "T":
-                task = new ToDo(description);
-                if (isDone) {
-                    task.setDone();
-                }
-                return task;
-            case "D":
-                LocalDate formattedDeadline = LocalDate.parse(deadline, Task.inputFormatter);
-                task = new Deadline(description, formattedDeadline);
-                if (isDone) {
-                    task.setDone();
-                }
-                return task;
-            case "E":
-                LocalDate formattedStartTime = LocalDate.parse(startTime, Task.inputFormatter);
-                LocalDate formattedEndTime = LocalDate.parse(endTime, Task.inputFormatter);
-                task = new Event(description, formattedStartTime, formattedEndTime);
-                if (isDone) {
-                    task.setDone();
-                }
-                return task;
-            default:
-                throw new ChatBotException("Oops! It seems that the format of the saved file is wrong/corrupted!");
+        case "T":
+            task = new ToDo(description);
+            if (isDone) {
+                task.setDone();
+            }
+            return task;
+        case "D":
+            LocalDate formattedDeadline = LocalDate.parse(deadline, Task.inputFormatter);
+            task = new Deadline(description, formattedDeadline);
+            if (isDone) {
+                task.setDone();
+            }
+            return task;
+        case "E":
+            LocalDate formattedStartTime = LocalDate.parse(startTime, Task.inputFormatter);
+            LocalDate formattedEndTime = LocalDate.parse(endTime, Task.inputFormatter);
+            task = new Event(description, formattedStartTime, formattedEndTime);
+            if (isDone) {
+                task.setDone();
+            }
+            return task;
+        default:
+            throw new ChatBotException("Oops! It seems that the format of the saved file is wrong/corrupted!");
+        }
+    }
+
+    public void save(TaskList tasks) throws ChatBotException {
+        try {
+            FileWriter fw = new FileWriter(this.filePath);
+            ArrayList<Task> arrayTask = tasks.getAllTasks();
+            for (Task task : arrayTask) {
+                fw.write(task.toSavedString() + "\n");
+            }
+            fw.close();
+        } catch (IOException e) {
+            throw new ChatBotException("Oops! Something went wrong, I cannot save the tasks list! "
+                    + e.getMessage());
         }
     }
 

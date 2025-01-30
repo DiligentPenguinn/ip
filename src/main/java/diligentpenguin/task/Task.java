@@ -1,4 +1,5 @@
 package diligentpenguin.task;
+
 import java.time.format.DateTimeFormatter;
 
 public class Task {
@@ -7,6 +8,7 @@ public class Task {
     String name = "";
     String type = "";
     Boolean isDone = false;
+
     public Task(String name) {
         this.name = name;
     }

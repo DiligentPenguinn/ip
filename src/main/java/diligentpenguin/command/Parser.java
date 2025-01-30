@@ -1,14 +1,16 @@
 package diligentpenguin.command;
+
+import java.util.Objects;
+
 import diligentpenguin.ChatBotException;
 import diligentpenguin.DiligentPenguin;
 import diligentpenguin.Storage;
 import diligentpenguin.Ui;
 import diligentpenguin.task.TaskList;
 
-import java.util.Objects;
-
 public class Parser {
     public Boolean isFinish = false;
+
     public void parse(String command, DiligentPenguin chatBot, Ui ui, Storage storage)
             throws ChatBotException {
         if (Objects.equals(command, "bye")) {

@@ -2,6 +2,7 @@ package diligentpenguin;
 
 public class Ui {
     static String horizontalLines = "-----------------------------------------------";
+
     public void showGreetMessage(String name) {
         System.out.println(horizontalLines);
         System.out.printf("Hello there! My name is %s \nTell me what you want to do! \n", name);

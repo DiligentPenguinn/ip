@@ -1,24 +1,29 @@
 package diligentpenguin;
-import diligentpenguin.command.Parser;
-import diligentpenguin.task.Task;
-import diligentpenguin.task.TaskList;
 
 import java.io.FileNotFoundException;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
+import diligentpenguin.command.Parser;
+import diligentpenguin.task.Task;
+import diligentpenguin.task.TaskList;
+
 
 public class DiligentPenguin {
+    static String name = "DiligentPenguin";
     private final Storage storage;
     private final Ui ui;
     private TaskList tasks = new TaskList();
-
-    static String name = "DiligentPenguin";
 
     public DiligentPenguin(String directoryPath, String fileName) {
         String filePath = directoryPath + fileName;
         this.storage = new Storage(directoryPath, filePath);
         this.ui = new Ui();
+    }
+
+    public static void main(String[] args) {
+        DiligentPenguin chatBot = new DiligentPenguin("src/main/data/", "tasks.txt");
+        chatBot.run();
     }
 
     public TaskList getTasks() {
@@ -84,10 +89,5 @@ public class DiligentPenguin {
                 ui.showChatbotErrorMessage(e);
             }
         }
-    }
-
-    public static void main(String[] args) {
-        DiligentPenguin chatBot = new DiligentPenguin("src/main/data/","tasks.txt");
-        chatBot.run();
     }
 }
