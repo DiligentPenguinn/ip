@@ -7,14 +7,20 @@ import java.time.format.DateTimeFormatter;
  * A <code>Task</code> object has a name, a completion status and a type
  */
 public class Task {
-    public static DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-    static DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("EEEE, MMMM d, yyyy");
-    String name = "";
-    String type = "";
-    Boolean isDone = false;
+    private static final DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private static final DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("EEEE, MMMM d, yyyy");
+    private String name = "";
+    private String type = "";
+    private Boolean isDone = false;
 
-    public Task(String name) {
+    /**
+     * Constructs a new <code>Task</code> object with the specified name and type.
+     * @param name The name of the task
+     * @param type The type of the task
+     */
+    public Task(String name, String type) {
         this.name = name;
+        this.type = type;
     }
 
     /**
@@ -40,6 +46,18 @@ public class Task {
 
     public String getName() {
         return this.name;
+    }
+
+    public boolean isDone() {
+        return this.isDone;
+    }
+
+    public static DateTimeFormatter getInputFormatter() {
+        return inputFormatter;
+    }
+
+    public static DateTimeFormatter getOutputFormatter() {
+        return outputFormatter;
     }
 
     /**

@@ -8,31 +8,36 @@ import java.time.LocalDate;
  * a start time and end time.
  */
 public class Event extends Task {
-    LocalDate startTime;
-    LocalDate endTime;
+    private LocalDate startTime;
+    private LocalDate endTime;
 
+    /**
+     * Constructs a new <code>Event</code> task with the specified name, starting and ending time.
+     * @param name The name of the event
+     * @param startTime The event's starting time
+     * @param endTime The event's ending time
+     */
     public Event(String name, LocalDate startTime, LocalDate endTime) {
-        super(name);
-        this.type = "E";
+        super(name, "E");
         this.startTime = startTime;
         this.endTime = endTime;
     }
 
     @Override
     public String toString() {
-        String mark = this.isDone ? "X" : " ";
+        String mark = this.isDone() ? "X" : " ";
         return String.format("[%s][%s] %s (from: %s to: %s)",
-                this.type, mark, this.name,
-                this.startTime.format(Event.outputFormatter),
-                this.endTime.format(Event.outputFormatter));
+                this.getType(), mark, this.getName(),
+                this.startTime.format(Event.getOutputFormatter()),
+                this.endTime.format(Event.getOutputFormatter()));
     }
 
     @Override
     public String toSavedString() {
-        String mark = this.isDone ? "X" : " ";
+        String mark = this.isDone() ? "X" : " ";
         return String.format("%s | %s | %s | %s | %s",
-                this.type, mark, this.name,
-                this.startTime.format(Event.inputFormatter),
-                this.endTime.format(Event.inputFormatter));
+                this.getType(), mark, this.getName(),
+                this.startTime.format(Event.getInputFormatter()),
+                this.endTime.format(Event.getInputFormatter()));
     }
 }

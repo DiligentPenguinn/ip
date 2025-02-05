@@ -1,13 +1,11 @@
 package diligentpenguin;
 
-import diligentpenguin.task.TaskList;
-
 /**
  * Handle UI operations for chatbot.
  * A <code>Ui</code> object shows responses and error messages to the user.
  */
 public class Ui {
-    static String horizontalLines = "-----------------------------------------------";
+    private String horizontalLines = "-----------------------------------------------";
 
 
     /**
@@ -81,43 +79,70 @@ public class Ui {
         System.out.println(task);
     }
 
+    /**
+     * Displays a message confirming the task list has been successfully loaded
+     * @param tasks Loaded tasks string
+     */
     public void showLoadSuccessMessage(String tasks) {
         System.out.println("I have successfully loaded previous task list for you!");
         this.showListMessage(tasks);
     }
 
+    /**
+     * Displays a message showing matching tasks given keywords
+     * @param tasks Tasks string that matches keywords
+     */
     public void showMatchingTasks(String tasks) {
         System.out.println("I have found tasks matching your description!");
         System.out.println(tasks);
     }
 
+    /**
+     * Displays a message showing no stored task list data found
+     */
     public void showNoDataMessage() {
         System.out.println("It seems that you have no prior task list stored.");
         System.out.println("I will start with a blank new task list!");
         System.out.println(horizontalLines);
     }
 
+    /**
+     * Displays a message showing matching tasks found
+     */
     public void showNoTasksFoundMessage() {
         System.out.println("It seems that there's no tasks that match your description!");
         System.out.println(horizontalLines);
     }
 
+    /**
+     * Displays a message showing no file found error
+     */
     public void showFileNotFoundError() {
         System.out.println("Oops! I couldn't find the data file of previous tasks");
         System.out.println("I will start with a blank new task list!");
         System.out.println(horizontalLines);
     }
 
+    /**
+     * Displays a general error message along with the exception
+     * @param e exception to display
+     */
     public void showChatbotErrorMessage(Exception e) {
         System.out.println("Oops! Something went wrong");
         System.out.println(e.getMessage());
     }
 
+    /**
+     * Displays an error message related to date time
+     */
     public void showDatetimeError() {
         System.out.println("Oops! There seems to be an error");
         System.out.println("The date time format for input is: dd/MM/yyyy. Please try again!");
     }
 
+    /**
+     * Displays a message showing unknown command
+     */
     public void showUnknownCommandMessage() {
         System.out.println("Uuh, I don't know what you mean");
     }

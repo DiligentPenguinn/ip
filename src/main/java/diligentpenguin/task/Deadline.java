@@ -7,25 +7,30 @@ import java.time.LocalDate;
  * A <code>Deadline</code> object has a due date in adition to <code>Task</code> object
  */
 public class Deadline extends Task {
-    LocalDate deadline;
+    private LocalDate deadline;
 
+    /**
+     * Constructs a new <code>Deadline</code> task with the specified name and due date.
+     *
+     * @param name The name or description of the task.
+     * @param deadline The due date of the task as a <code>LocalDate</code> object.
+     */
     public Deadline(String name, LocalDate deadline) {
-        super(name);
-        this.type = "D";
+        super(name, "D");
         this.deadline = deadline;
     }
 
     @Override
     public String toString() {
-        String mark = this.isDone ? "X" : " ";
+        String mark = this.isDone() ? "X" : " ";
         return String.format("[%s][%s] %s (by: %s)",
-                this.type, mark, this.name, this.deadline.format(Deadline.outputFormatter));
+                this.getType(), mark, this.getName(), this.deadline.format(Deadline.getOutputFormatter()));
     }
 
     @Override
     public String toSavedString() {
-        String mark = this.isDone ? "X" : " ";
+        String mark = this.isDone() ? "X" : " ";
         return String.format("%s | %s | %s | %s",
-                this.type, mark, this.name, this.deadline.format(Deadline.inputFormatter));
+                this.getType(), mark, this.getName(), this.deadline.format(Deadline.getInputFormatter()));
     }
 }

@@ -10,7 +10,7 @@ import diligentpenguin.ChatBotException;
  * Represents a list of <code>Task</code> objects.
  */
 public class TaskList {
-    ArrayList<Task> list;
+    private ArrayList<Task> list;
 
     public TaskList() {
         this.list = new ArrayList<>();
@@ -32,7 +32,7 @@ public class TaskList {
      * @throws DateTimeParseException If the datetime format is incorrect
      */
     public void add(String item, TaskType type) throws ChatBotException, DateTimeParseException {
-        Task task = new Task("");
+        Task task = null;
         if (type.equals(TaskType.DEADLINE)) {
             if (!item.contains("/by")) {
                 throw new ChatBotException("""
@@ -54,7 +54,7 @@ public class TaskList {
                 throw new ChatBotException("Did you forget to specify name or deadline of the task?");
             }
 
-            LocalDate formattedDeadline = LocalDate.parse(deadline, Task.inputFormatter);
+            LocalDate formattedDeadline = LocalDate.parse(deadline, Task.getInputFormatter());
             task = new Deadline(name, formattedDeadline);
         } else if (type.equals(TaskType.EVENT)) {
             if (!item.contains("/from") || !item.contains("/to")) {
@@ -69,11 +69,11 @@ public class TaskList {
             String endTime = item.substring(indexTo + 3).trim();
 
             if (name.isEmpty() || startTime.isEmpty() || endTime.isEmpty()) {
-                throw new ChatBotException("Did you forget to specify name " +
-                        "or start time / end time of the task?");
+                throw new ChatBotException("Did you forget to specify name "
+                        + "or start time / end time of the task?");
             }
-            LocalDate formattedStartTime = LocalDate.parse(startTime, Task.inputFormatter);
-            LocalDate formattedEndTime = LocalDate.parse(endTime, Task.inputFormatter);
+            LocalDate formattedStartTime = LocalDate.parse(startTime, Task.getInputFormatter());
+            LocalDate formattedEndTime = LocalDate.parse(endTime, Task.getInputFormatter());
 
             task = new Event(name, formattedStartTime, formattedEndTime);
         } else if (type.equals(TaskType.TODO)) {
@@ -85,6 +85,11 @@ public class TaskList {
         this.list.add(task);
     }
 
+    /**
+     * Find the matching tasks given the keyword
+     * @param keyword The keyword to match
+     * @return The list of matching tasks
+     */
     public TaskList find(String keyword) {
         TaskList filteredTasks = new TaskList();
         for (Task task: this.list) {
@@ -165,6 +170,9 @@ public class TaskList {
         return listString.toString();
     }
 
+    /**
+     * Represents different types of task that can be created
+     */
     public enum TaskType {
         TODO, DEADLINE, EVENT
     }

@@ -15,7 +15,7 @@ import diligentpenguin.task.TaskList;
  */
 
 public class DiligentPenguin {
-    static String name = "DiligentPenguin";
+    private String name = "DiligentPenguin";
     private final Storage storage;
     private final Ui ui;
     private TaskList tasks = new TaskList();
@@ -99,7 +99,11 @@ public class DiligentPenguin {
         }
     }
 
-    public void find(String keyword) {
+    /**
+     * Find tasks matching the given keyword
+     * @param keyword keyword to match
+     */
+    public void findByKeyword(String keyword) {
         TaskList filteredTasks = this.tasks.find(keyword);
         if (filteredTasks.isEmpty()) {
             ui.showNoTasksFoundMessage();
@@ -127,7 +131,7 @@ public class DiligentPenguin {
 
         Parser parser = new Parser();
 
-        while (!parser.isFinish) {
+        while (!parser.isFinish()) {
             String userInput = scanner.nextLine();
             try {
                 parser.parse(userInput, this, this.ui, this.storage);

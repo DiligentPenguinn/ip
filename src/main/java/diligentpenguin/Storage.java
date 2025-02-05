@@ -21,9 +21,14 @@ import diligentpenguin.task.ToDo;
  * handles loading and saving of task data.
  */
 public class Storage {
-    String filePath;
-    String directoryPath;
+    private String filePath;
+    private String directoryPath;
 
+    /**
+     * Constructs a new <code>Storage</code> object with the specified paths to directory and file
+     * @param directoryPath Path to where the data file is stored
+     * @param filePath Path to the data file
+     */
     public Storage(String directoryPath, String filePath) {
         this.filePath = filePath;
         this.directoryPath = directoryPath;
@@ -73,15 +78,15 @@ public class Storage {
             }
             return task;
         case "D":
-            LocalDate formattedDeadline = LocalDate.parse(deadline, Task.inputFormatter);
+            LocalDate formattedDeadline = LocalDate.parse(deadline, Task.getInputFormatter());
             task = new Deadline(description, formattedDeadline);
             if (isDone) {
                 task.setDone();
             }
             return task;
         case "E":
-            LocalDate formattedStartTime = LocalDate.parse(startTime, Task.inputFormatter);
-            LocalDate formattedEndTime = LocalDate.parse(endTime, Task.inputFormatter);
+            LocalDate formattedStartTime = LocalDate.parse(startTime, Task.getInputFormatter());
+            LocalDate formattedEndTime = LocalDate.parse(endTime, Task.getInputFormatter());
             task = new Event(description, formattedStartTime, formattedEndTime);
             if (isDone) {
                 task.setDone();

@@ -13,8 +13,11 @@ import diligentpenguin.task.TaskList;
  * A <code>Parser</code> object takes in user command and executes corresponding chatbot operations
  */
 public class Parser {
-    public Boolean isFinish = false;
+    private boolean isFinish = false;
 
+    public boolean isFinish() {
+        return this.isFinish;
+    }
 
     /**
      * Parse and execute the user command
@@ -43,8 +46,8 @@ public class Parser {
             chatBot.delete(index);
         } else if (command.startsWith("find ")) {
             String keyword = command.substring(5);
-            chatBot.find(keyword);
-//                    Three cases above can be combined
+            chatBot.findByKeyword(keyword);
+            // Three cases above can be combined
         } else if (command.startsWith("todo ")) {
             String description = command.substring(5);
             chatBot.store(description, TaskList.TaskType.TODO);
