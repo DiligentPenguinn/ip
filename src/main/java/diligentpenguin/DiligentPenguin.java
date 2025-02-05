@@ -19,6 +19,8 @@ public class DiligentPenguin {
     private final Storage storage;
     private final Ui ui;
     private TaskList tasks = new TaskList();
+    private final Parser parser;
+    private boolean isOver = false;
 
     /**
      * Construct a new <code>DiligentPenguin</code> chatbot.
@@ -29,11 +31,26 @@ public class DiligentPenguin {
         String filePath = directoryPath + fileName;
         this.storage = new Storage(directoryPath, filePath);
         this.ui = new Ui();
+        parser = new Parser(this, this.ui, this.storage);
     }
 
     public static void main(String[] args) {
         DiligentPenguin chatBot = new DiligentPenguin("src/main/data/", "tasks.txt");
-        chatBot.run();
+        // chatBot.run();
+    }
+
+    /**
+     * Generates a response for the user's chat message.
+     */
+    public String getResponse(String input) {
+        try {
+            return parser.parse(input);
+        } catch (Exception e) {
+            String message = "Oops! there seems to be an error:\n"
+                    + e.getMessage()
+                    + "\nPlease try again!";
+            return message;
+        }
     }
 
     /**
@@ -51,95 +68,101 @@ public class DiligentPenguin {
      * @throws ChatBotException If the task format is incorrect
      * @throws DateTimeParseException If the task datetime format is incorrect
      */
-    public void store(String userInput, TaskList.TaskType type) throws ChatBotException, DateTimeParseException {
-        tasks.add(userInput, type);
-        ui.showStoreMessage(tasks.getSize());
-    }
+//    public void store(String userInput, TaskList.TaskType type) throws ChatBotException, DateTimeParseException {
+//        tasks.add(userInput, type);
+//        ui.showStoreMessage(tasks.getSize());
+//    }
 
     /**
      * Mark a task as completed by index
      * @param i Index of task to mark
      * @throws ChatBotException If the index is out of bound
      */
-    public void mark(int i) throws ChatBotException {
-        try {
-            tasks.finish(i);
-            ui.showMarkMessage(tasks.get(i).toString(), i);
-        } catch (IndexOutOfBoundsException e) {
-            throw new ChatBotException("That's not a valid item index!");
-        }
-    }
+//    public void mark(int i) throws ChatBotException {
+//        try {
+//            tasks.finish(i);
+//            ui.showMarkMessage(tasks.get(i).toString(), i);
+//        } catch (IndexOutOfBoundsException e) {
+//            throw new ChatBotException("That's not a valid item index!");
+//        }
+//    }
 
     /**
      * Mark a task as uncompleted by index
      * @param i Index of task to mark
      * @throws ChatBotException If the index is out of bound
      */
-    public void unmark(int i) throws ChatBotException {
-        try {
-            tasks.unfinish(i);
-            ui.showUnmarkMessage(tasks.get(i).toString(), i);
-        } catch (IndexOutOfBoundsException e) {
-            throw new ChatBotException("That's not a valid item index!");
-        }
-    }
+//    public void unmark(int i) throws ChatBotException {
+//        try {
+//            tasks.unfinish(i);
+//            ui.showUnmarkMessage(tasks.get(i).toString(), i);
+//        } catch (IndexOutOfBoundsException e) {
+//            throw new ChatBotException("That's not a valid item index!");
+//        }
+//    }
 
     /**
      * Delete a task by index
      * @param i Index of the task to delete
      * @throws ChatBotException If the index is out of bound
      */
-    public void delete(int i) throws ChatBotException {
-        try {
-            Task task = tasks.get(i);
-            tasks.remove(i);
-            ui.showDeleteMessage(task.toString(), i);
-        } catch (IndexOutOfBoundsException e) {
-            throw new ChatBotException("That's not a valid item index!");
-        }
-    }
+//    public void delete(int i) throws ChatBotException {
+//        try {
+//            Task task = tasks.get(i);
+//            tasks.remove(i);
+//            ui.showDeleteMessage(task.toString(), i);
+//        } catch (IndexOutOfBoundsException e) {
+//            throw new ChatBotException("That's not a valid item index!");
+//        }
+//    }
 
     /**
      * Find tasks matching the given keyword
      * @param keyword keyword to match
      */
-    public void findByKeyword(String keyword) {
-        TaskList filteredTasks = this.tasks.find(keyword);
-        if (filteredTasks.isEmpty()) {
-            ui.showNoTasksFoundMessage();
-        } else {
-            ui.showMatchingTasks(filteredTasks.toString());
-        }
+//    public void findByKeyword(String keyword) {
+//        TaskList filteredTasks = this.tasks.find(keyword);
+//        if (filteredTasks.isEmpty()) {
+//            ui.showNoTasksFoundMessage();
+//        } else {
+//            ui.showMatchingTasks(filteredTasks.toString());
+//        }
+//    }
+
+    public boolean isOver() {
+        return this.isOver;
     }
 
+    public void setOver() {
+        this.isOver = true;
+    }
     /**
      * Run the chatbot, handle user inputs and responses.
      */
-    public void run() {
-        Scanner scanner = new Scanner(System.in);
-        this.ui.showGreetMessage(name);
+    public String run() {
+        String message = "";
+        message = message + this.ui.generateGreetMessage(name) + "\n";
         try {
             this.storage.loadTaskList(tasks);
             this.storage.save(tasks);
-            ui.showLoadSuccessMessage(tasks.toString());
+            message = message + ui.generateLoadSuccessMessage(tasks.toString()) + "\n";
         } catch (ChatBotException e) {
-            ui.showNoDataMessage();
+            message = message + ui.generateNoDataMessage() + "\n";
         } catch (FileNotFoundException e) {
-            ui.showFileNotFoundError();
+            message = message + ui.generateFileNotFoundError() + "\n";
             this.storage.createSavedDirectoryAndFile();
         }
 
-        Parser parser = new Parser();
-
-        while (!parser.isFinish()) {
-            String userInput = scanner.nextLine();
-            try {
-                parser.parse(userInput, this, this.ui, this.storage);
-            } catch (DateTimeParseException e) {
-                ui.showDatetimeError();
-            } catch (Exception e) {
-                ui.showChatbotErrorMessage(e);
-            }
-        }
+        return message;
+//        while (!parser.isFinish()) {
+//            String userInput = scanner.nextLine();
+//            try {
+//                parser.parse(userInput);
+//            } catch (DateTimeParseException e) {
+//                ui.showDatetimeError();
+//            } catch (Exception e) {
+//                ui.showChatbotErrorMessage(e);
+//            }
+//        }
     }
 }

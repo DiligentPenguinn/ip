@@ -7,143 +7,137 @@ package diligentpenguin;
 public class Ui {
     private String horizontalLines = "-----------------------------------------------";
 
-
     /**
-     * Displays a greeting message when the chatbot starts
+     * Generates a greeting message when the chatbot starts
      * @param name Name of the chatbot
+     * @return Greeting message
      */
-    public void showGreetMessage(String name) {
-        System.out.println(horizontalLines);
-        System.out.printf("Hello there! My name is %s \nTell me what you want to do! \n", name);
-        System.out.println(horizontalLines);
+    public String generateGreetMessage(String name) {
+        return String.format("Hello there! My name is %s \nTell me what you want to do! \n", name);
     }
 
     /**
-     * Displays an exit message when the chatbot closes
+     * Generates an exit message when the chatbot closes
+     * @return Exit message
      */
-    public void showExitMessage() {
-        System.out.println(horizontalLines);
-        System.out.println("Bye bye. Come back to me soon!");
-        System.out.println(horizontalLines);
+    public String generateExitMessage() {
+        return "Bye bye. Come back to me soon!\n";
     }
 
     /**
-     * Displays a message confirming the task as been stored
+     * Generates a message confirming the task has been stored
      * @param size Number of tasks after storing
+     * @return Store confirmation message
      */
-    public void showStoreMessage(int size) {
-        System.out.println(horizontalLines);
-        System.out.println("Noted. I will write this down for you!");
-        System.out.printf("I have noted down a total of %d tasks for you \n", size);
-        System.out.println(horizontalLines);
+    public String generateStoreMessage(int size) {
+        return "Noted. I will write this down for you!\n" +
+                String.format("I have noted down a total of %d tasks for you \n", size);
     }
 
     /**
-     * Displays a message listing all tasks stored
+     * Generates a message listing all tasks stored
      * @param tasks String representation of all tasks stored
+     * @return List of tasks message
      */
-    public void showListMessage(String tasks) {
-        System.out.println(horizontalLines);
-        System.out.println("Here is the list of items I noted down");
-        System.out.println(tasks);
-        System.out.println(horizontalLines);
+    public String generateListMessage(String tasks) {
+        return "Here is the list of items I noted down\n" + tasks + "\n";
     }
 
     /**
-     * Displays a message confirming the task has been marked
+     * Generates a message confirming the task has been marked
      * @param task Task to mark
      * @param i Index of task to mark
+     * @return Mark confirmation message
      */
-    public void showMarkMessage(String task, int i) {
-        System.out.println("Noted! I'll mark task " + (i + 1) + " as done: ");
-        System.out.println(task);
+    public String generateMarkMessage(String task, int i) {
+        return "Noted! I'll mark task " + (i + 1) + " as done: \n" + task;
     }
 
     /**
-     * Displays a message confirming the task has been unmarked
+     * Generates a message confirming the task has been unmarked
      * @param task Task to unmark
      * @param i Index of task to unmark
+     * @return Unmark confirmation message
      */
-    public void showUnmarkMessage(String task, int i) {
-        System.out.println("Noted! I'll unmark task " + (i + 1) + " as undone: ");
-        System.out.println(task);
+    public String generateUnmarkMessage(String task, int i) {
+        return "Noted! I'll unmark task " + (i + 1) + " as undone: \n" + task;
     }
 
     /**
-     * Displays a message confirming the task has been deleted
+     * Generates a message confirming the task has been deleted
      * @param task Task to delete
      * @param i Index of task to delete
+     * @return Delete confirmation message
      */
-    public void showDeleteMessage(String task, int i) {
-        System.out.println("Noted! I'll delete task " + (i + 1) + " from the list: ");
-        System.out.println(task);
+    public String generateDeleteMessage(String task, int i) {
+        return "Noted! I'll delete task " + (i + 1) + " from the list: \n" + task;
     }
 
     /**
-     * Displays a message confirming the task list has been successfully loaded
+     * Generates a message confirming the task list has been successfully loaded
      * @param tasks Loaded tasks string
+     * @return Load success message
      */
-    public void showLoadSuccessMessage(String tasks) {
-        System.out.println("I have successfully loaded previous task list for you!");
-        this.showListMessage(tasks);
+    public String generateLoadSuccessMessage(String tasks) {
+        return "I have successfully loaded the previous task list for you!\n" + generateListMessage(tasks);
     }
 
     /**
-     * Displays a message showing matching tasks given keywords
+     * Generates a message showing matching tasks given keywords
      * @param tasks Tasks string that matches keywords
+     * @return Matching tasks message
      */
-    public void showMatchingTasks(String tasks) {
-        System.out.println("I have found tasks matching your description!");
-        System.out.println(tasks);
+    public String generateMatchingTasks(String tasks) {
+        return "I have found tasks matching your description!\n" + tasks;
     }
 
     /**
-     * Displays a message showing no stored task list data found
+     * Generates a message showing no stored task list data found
+     * @return No data message
      */
-    public void showNoDataMessage() {
-        System.out.println("It seems that you have no prior task list stored.");
-        System.out.println("I will start with a blank new task list!");
-        System.out.println(horizontalLines);
+    public String generateNoDataMessage() {
+        return "It seems that you have no prior task list stored.\nI will start with a blank new task list!\n";
     }
 
     /**
-     * Displays a message showing matching tasks found
+     * Generates a message indicating no matching tasks were found
+     * @return No tasks found message
      */
-    public void showNoTasksFoundMessage() {
-        System.out.println("It seems that there's no tasks that match your description!");
-        System.out.println(horizontalLines);
+    public String generateNoTasksFoundMessage() {
+        return "It seems that there's no tasks that match your description!\n";
     }
 
     /**
-     * Displays a message showing no file found error
+     * Generates a message indicating no file was found
+     * @return File not found message
      */
-    public void showFileNotFoundError() {
-        System.out.println("Oops! I couldn't find the data file of previous tasks");
-        System.out.println("I will start with a blank new task list!");
-        System.out.println(horizontalLines);
+    public String generateFileNotFoundError() {
+        return "Oops! I couldn't find the data file of previous tasks\nI will start with a blank new task list!\n";
     }
 
     /**
-     * Displays a general error message along with the exception
+     * Generates a general error message along with the exception
      * @param e exception to display
+     * @return Error message
      */
-    public void showChatbotErrorMessage(Exception e) {
-        System.out.println("Oops! Something went wrong");
-        System.out.println(e.getMessage());
+    public String generateChatbotErrorMessage(Exception e) {
+        return "Oops! Something went wrong\n" + e.getMessage();
     }
 
     /**
-     * Displays an error message related to date time
+     * Generates an error message related to date time
+     * @return Date time error message
      */
-    public void showDatetimeError() {
-        System.out.println("Oops! There seems to be an error");
-        System.out.println("The date time format for input is: dd/MM/yyyy. Please try again!");
+    public String generateDatetimeError() {
+        return "Oops! There seems to be an error\nThe date time format for input is: dd/MM/yyyy. Please try again!";
     }
 
     /**
-     * Displays a message showing unknown command
+     * Generates a message showing an unknown command
+     * @return Unknown command message
      */
-    public void showUnknownCommandMessage() {
-        System.out.println("Uuh, I don't know what you mean");
+    public String generateUnknownCommandMessage() {
+        return "Uuh, I don't know what you mean";
     }
+
 }

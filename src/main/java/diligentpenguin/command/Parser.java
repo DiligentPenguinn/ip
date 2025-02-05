@@ -1,67 +1,138 @@
 package diligentpenguin.command;
 
+import java.time.LocalDate;
 import java.util.Objects;
 
 import diligentpenguin.ChatBotException;
 import diligentpenguin.DiligentPenguin;
 import diligentpenguin.Storage;
 import diligentpenguin.Ui;
+import diligentpenguin.task.Deadline;
+import diligentpenguin.task.Event;
+import diligentpenguin.task.Task;
 import diligentpenguin.task.TaskList;
+import diligentpenguin.task.ToDo;
 
 /**
  * Handles user's commands for chatbot.
  * A <code>Parser</code> object takes in user command and executes corresponding chatbot operations
  */
 public class Parser {
-    private boolean isFinish = false;
+    private DiligentPenguin diligentPenguin;
+    private Ui ui;
+    private Storage storage;
 
-    public boolean isFinish() {
-        return this.isFinish;
+    public Parser(DiligentPenguin diligentPenguin, Ui ui, Storage storage) {
+        this.diligentPenguin = diligentPenguin;
+        this.ui = ui;
+        this.storage = storage;
     }
 
     /**
      * Parse and execute the user command
      * @param command Command to parse and execute
-     * @param chatBot Chatbot to execute command on
-     * @param ui <code>Ui</code> object corresponds to the chatbot
-     * @param storage <code>Storage</code> object corresponds to the chatbot
+     * @return The response from Ui
      * @throws ChatBotException If error occurs while parsing and executing
      */
-    public void parse(String command, DiligentPenguin chatBot, Ui ui, Storage storage)
-            throws ChatBotException {
+    public String parse(String command) throws ChatBotException {
         if (Objects.equals(command, "bye")) {
-            ui.showExitMessage();
-            this.isFinish = true;
+            diligentPenguin.setOver();
+            return ui.generateExitMessage();
         } else if (Objects.equals(command, "list")) {
-            ui.showListMessage(chatBot.getTasks().toString());
+            return ui.generateListMessage(diligentPenguin.getTasks().toString());
             // Use of Regex below is adapted from a conversation with chatGPT
         } else if (command.matches("mark \\d+")) {
             int index = Integer.parseInt(command.substring(5)) - 1;
-            chatBot.mark(index);
+            try {
+                diligentPenguin.getTasks().finish(index);
+                storage.save(diligentPenguin.getTasks());
+                return ui.generateMarkMessage(diligentPenguin.getTasks().get(index).toString(), index);
+            } catch (IndexOutOfBoundsException e) {
+                throw new ChatBotException("That's not a valid item index!");
+            }
         } else if (command.matches("unmark \\d+")) {
             int index = Integer.parseInt(command.substring(7)) - 1;
-            chatBot.unmark(index);
+            try {
+                diligentPenguin.getTasks().unfinish(index);
+                storage.save(diligentPenguin.getTasks());
+                return ui.generateUnmarkMessage(diligentPenguin.getTasks().get(index).toString(), index);
+            } catch (IndexOutOfBoundsException e) {
+                throw new ChatBotException("That's not a valid item index!");
+            }
         } else if (command.matches("delete \\d+")) {
             int index = Integer.parseInt(command.substring(7)) - 1;
-            chatBot.delete(index);
+            try {
+                Task task = diligentPenguin.getTasks().get(index);
+                diligentPenguin.getTasks().remove(index);
+                storage.save(diligentPenguin.getTasks());
+                return ui.generateDeleteMessage(task.toString(), index);
+            } catch (IndexOutOfBoundsException e) {
+                throw new ChatBotException("That's not a valid item index!");
+            }
         } else if (command.startsWith("find ")) {
             String keyword = command.substring(5);
-            chatBot.findByKeyword(keyword);
+            TaskList filteredTasks = diligentPenguin.getTasks().find(keyword);
+            if (filteredTasks.isEmpty()) {
+                return ui.generateNoTasksFoundMessage();
+            } else {
+                return ui.generateMatchingTasks(filteredTasks.toString());
+            }
             // Three cases above can be combined
         } else if (command.startsWith("todo ")) {
             String description = command.substring(5);
-            chatBot.store(description, TaskList.TaskType.TODO);
-            storage.save(chatBot.getTasks());
+            if (description.trim().isEmpty()) {
+                throw new ChatBotException("Did you forget to specify name of the task? \n"
+                        + ToDoCommand.getCommandInfo());
+            }
+            ToDo todoTask = new ToDo(description);
+            diligentPenguin.getTasks().add(todoTask);
+            storage.save(diligentPenguin.getTasks());
+            return ui.generateStoreMessage(diligentPenguin.getTasks().getSize());
         } else if (command.startsWith("deadline ")) {
-            String description = command.substring(9);
-            chatBot.store(description, TaskList.TaskType.DEADLINE);
-            storage.save(chatBot.getTasks());
+            String item = command.substring(9);
+            if (!item.contains("/by")) {
+                throw new ChatBotException(DeadlineCommand.getCommandInfo());
+            }
+            // The piece of code in between is inspired by a conversation with chatGPT
+            int index = item.indexOf("/by");
+
+            // Extract the part before "/by"
+            String description = item.substring(0, index).trim();
+
+            // Extract the part after "/by"
+            String deadline = item.substring(index + 3).trim();
+            LocalDate formattedDeadline = LocalDate.parse(deadline, Task.getInputFormatter());
+            // The piece of code in between is inspired by a conversation with chatGPT
+
+            Deadline deadlineTask = new Deadline(description, formattedDeadline);
+            diligentPenguin.getTasks().add(deadlineTask);
+            storage.save(diligentPenguin.getTasks());
+            return ui.generateStoreMessage(diligentPenguin.getTasks().getSize());
         } else if (command.startsWith("event ")) {
-            String description = command.substring(6);
-            chatBot.store(description, TaskList.TaskType.EVENT);
-            storage.save(chatBot.getTasks());
+            String item = command.substring(6);
+
+            if (!item.contains("/from") || !item.contains("/to")) {
+                throw new ChatBotException(EventCommand.getCommandInfo());
+            }
+            int indexFrom = item.indexOf("/from");
+            int indexTo = item.indexOf("/to");
+
+            String description = item.substring(0, indexFrom).trim();
+            String startTime = item.substring(indexFrom + 5, indexTo).trim();
+            String endTime = item.substring(indexTo + 3).trim();
+
+            if (description.isEmpty() || startTime.isEmpty() || endTime.isEmpty()) {
+                throw new ChatBotException(EventCommand.getCommandInfo());
+            }
+            LocalDate formattedStartTime = LocalDate.parse(startTime, Task.getInputFormatter());
+            LocalDate formattedEndTime = LocalDate.parse(endTime, Task.getInputFormatter());
+
+            Event eventTask = new Event(description, formattedStartTime, formattedEndTime);
+            diligentPenguin.getTasks().add(eventTask);
+            storage.save(diligentPenguin.getTasks());
+            return ui.generateStoreMessage(diligentPenguin.getTasks().getSize());
         } else {
-            ui.showUnknownCommandMessage();
+            return ui.generateUnknownCommandMessage();
         }
     }
 }
