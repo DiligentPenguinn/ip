@@ -26,21 +26,19 @@ public class DiligentPenguin {
      * @param fileName Name of the file where task data is stored
      */
     public DiligentPenguin(String directoryPath, String fileName) {
+        assert directoryPath != null : "Directory path should not be null!";
+        assert fileName != null : "File name should not be null";
         String filePath = directoryPath + fileName;
         this.storage = new Storage(directoryPath, filePath);
         this.ui = new Ui();
         parser = new Parser(this, this.ui, this.storage);
     }
 
-    public static void main(String[] args) {
-        DiligentPenguin chatBot = new DiligentPenguin("src/main/data/", "tasks.txt");
-        // chatBot.run();
-    }
-
     /**
      * Generates a response for the user's chat message.
      */
     public String getResponse(String input) {
+        assert input != null : "User input should not be null!";
         try {
             return parser.parse(input);
         } catch (Exception e) {

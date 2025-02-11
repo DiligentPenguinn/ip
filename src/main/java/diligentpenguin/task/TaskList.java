@@ -27,6 +27,7 @@ public class TaskList {
      * @return The list of matching tasks
      */
     public TaskList find(String keyword) {
+        assert (keyword != null) : "keyword to find should not be null!";
         TaskList filteredTasks = new TaskList();
         for (Task task: this.list) {
             if (task.getName().contains(keyword)) {
