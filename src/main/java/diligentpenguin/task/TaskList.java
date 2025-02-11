@@ -1,10 +1,7 @@
 package diligentpenguin.task;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 
-import diligentpenguin.ChatBotException;
 
 /**
  * Represents a list of <code>Task</code> objects.
@@ -25,72 +22,12 @@ public class TaskList {
     }
 
     /**
-     * Add a task to the list based on its text description
-     * @param item Text description of the task
-     * @param type Type of the tas
-     * @throws ChatBotException If the input format is incorrect
-     * @throws DateTimeParseException If the datetime format is incorrect
-     */
-    public void add(String item, TaskType type) throws ChatBotException, DateTimeParseException {
-        Task task = null;
-        if (type.equals(TaskType.DEADLINE)) {
-            if (!item.contains("/by")) {
-                throw new ChatBotException("""
-                        For deadline command, format your command like this:\s
-                        event <name> /by <deadline>\s
-                        """);
-            }
-            // The piece of code in between is inspired by a conversation with chatGPT
-            int index = item.indexOf("/by");
-
-            // Extract the part before "/by"
-            String name = item.substring(0, index).trim();
-
-            // Extract the part after "/by"
-            String deadline = item.substring(index + 3).trim();
-            // The piece of code in between is inspired by a conversation with chatGPT
-
-            if (name.isEmpty() || deadline.isEmpty()) {
-                throw new ChatBotException("Did you forget to specify name or deadline of the task?");
-            }
-
-            LocalDate formattedDeadline = LocalDate.parse(deadline, Task.getInputFormatter());
-            task = new Deadline(name, formattedDeadline);
-        } else if (type.equals(TaskType.EVENT)) {
-            if (!item.contains("/from") || !item.contains("/to")) {
-                throw new ChatBotException("For event command, format your command like this: \n"
-                        + "event <name> /from <startTime> /to <endTime> \n");
-            }
-            int indexFrom = item.indexOf("/from");
-            int indexTo = item.indexOf("/to");
-
-            String name = item.substring(0, indexFrom).trim();
-            String startTime = item.substring(indexFrom + 5, indexTo).trim();
-            String endTime = item.substring(indexTo + 3).trim();
-
-            if (name.isEmpty() || startTime.isEmpty() || endTime.isEmpty()) {
-                throw new ChatBotException("Did you forget to specify name "
-                        + "or start time / end time of the task?");
-            }
-            LocalDate formattedStartTime = LocalDate.parse(startTime, Task.getInputFormatter());
-            LocalDate formattedEndTime = LocalDate.parse(endTime, Task.getInputFormatter());
-
-            task = new Event(name, formattedStartTime, formattedEndTime);
-        } else if (type.equals(TaskType.TODO)) {
-            if (item.trim().isEmpty()) {
-                throw new ChatBotException("Did you forget to specify name of the task?");
-            }
-            task = new ToDo(item);
-        }
-        this.list.add(task);
-    }
-
-    /**
      * Find the matching tasks given the keyword
      * @param keyword The keyword to match
      * @return The list of matching tasks
      */
     public TaskList find(String keyword) {
+        assert (keyword != null) : "keyword to find should not be null!";
         TaskList filteredTasks = new TaskList();
         for (Task task: this.list) {
             if (task.getName().contains(keyword)) {

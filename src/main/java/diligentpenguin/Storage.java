@@ -30,6 +30,8 @@ public class Storage {
      * @param filePath Path to the data file
      */
     public Storage(String directoryPath, String filePath) {
+        assert directoryPath != null : "Directory path should not be null!";
+        assert filePath != null : "File path should not be null";
         this.filePath = filePath;
         this.directoryPath = directoryPath;
     }
@@ -40,6 +42,7 @@ public class Storage {
      * @throws ChatBotException If error occurs while saving
      */
     public void save(TaskList tasks) throws ChatBotException {
+        assert tasks != null : "Task list should not be null!";
         try {
             FileWriter fw = new FileWriter(this.filePath);
             ArrayList<Task> arrayTask = tasks.getAllTasks();
@@ -61,6 +64,7 @@ public class Storage {
      * @throws DateTimeParseException If description datetime format is incorrect
      */
     private static Task readTask(String line) throws ChatBotException, DateTimeParseException {
+        assert line != null : "Line to read should not be null!";
         Task task;
         String[] parts = line.split("\\|");
         String type = parts[0].trim();
@@ -104,6 +108,7 @@ public class Storage {
      * @throws FileNotFoundException If saved file is not found
      */
     public void loadTaskList(TaskList tasks) throws ChatBotException, FileNotFoundException {
+        assert tasks != null : "Task list to load should not be null!";
         File file = new File(this.filePath);
         Scanner scanner = new Scanner(file);
         String taskDescription = "";
