@@ -78,7 +78,7 @@ public class Storage {
         boolean isDone = parts[1].trim().equals("X");
         String description = parts[2].trim();
         String deadline = (parts.length == deadlineTaskLength) ? parts[deadlineIndex].trim() : "";
-        String startTime = (parts.length == eventTaskLength ) ? parts[eventStartTimeIndex].trim() : "";
+        String startTime = (parts.length == eventTaskLength) ? parts[eventStartTimeIndex].trim() : "";
         String endTime = (parts.length == eventTaskLength) ? parts[eventEndTimeIndex].trim() : "";
         // The above code is inspired by a conversation with chatGPT
         switch (type) {

@@ -89,5 +89,7 @@ public class Task {
     /**
      * @return a string formatted for editing purpose
      */
-    public String toEditString(int index) { return ""; }
+    public String toEditString(int index) {
+        return "";
+    }
 }

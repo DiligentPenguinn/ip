@@ -1,5 +1,8 @@
 package diligentpenguin.command;
 
+/**
+ * Represents find command, contains information about the command
+ */
 public class FindCommand extends Command {
     private final String keyword;
     public FindCommand(String keyword) {

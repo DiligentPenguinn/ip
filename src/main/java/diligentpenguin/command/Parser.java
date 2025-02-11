@@ -6,10 +6,10 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import diligentpenguin.exception.ChatBotException;
 import diligentpenguin.DiligentPenguin;
 import diligentpenguin.Storage;
 import diligentpenguin.Ui;
+import diligentpenguin.exception.ChatBotException;
 import diligentpenguin.exception.DeadlineException;
 import diligentpenguin.exception.EventException;
 import diligentpenguin.exception.InvalidDateTimeFormatException;
@@ -31,12 +31,24 @@ public class Parser {
     private Ui ui;
     private Storage storage;
 
+    /**
+     * Constructs a parser object
+     * @param diligentPenguin Chatbot to use
+     * @param ui Ui to use
+     * @param storage Storage to use
+     */
     public Parser(DiligentPenguin diligentPenguin, Ui ui, Storage storage) {
         this.diligentPenguin = diligentPenguin;
         this.ui = ui;
         this.storage = storage;
     }
 
+    /**
+     * Processes the description string into a ToDo object
+     * @param item string to process
+     * @return Processed ToDo object
+     * @throws ChatBotException If error occurs during parsing
+     */
     public ToDo processToDoTask(String item) throws ChatBotException {
         if (item.trim().isEmpty()) {
             throw new ToDoException();
@@ -44,6 +56,12 @@ public class Parser {
         return new ToDo(item);
     }
 
+    /**
+     * Processes the description string into a Deadline object
+     * @param item string to process
+     * @return Processed Deadline object
+     * @throws ChatBotException If error occurs during parsing
+     */
     public Deadline processDeadlineTask(String item) throws ChatBotException {
         if (!item.contains("/by")) {
             throw new DeadlineException();
@@ -65,6 +83,12 @@ public class Parser {
         }
     }
 
+    /**
+     * Processes the description string into a Event object
+     * @param item string to process
+     * @return Processed Event object
+     * @throws ChatBotException If error occurs during parsing
+     */
     public Event processEventTask(String item) throws ChatBotException {
         if (!item.contains("/from") || !item.contains("/to")) {
             throw new EventException();
@@ -89,6 +113,13 @@ public class Parser {
         }
     }
 
+    /**
+     * Process a string task into a Task object given its type
+     * @param type Type of the task
+     * @param item String to process
+     * @return Processed Task object
+     * @throws ChatBotException If error occurs during parsing
+     */
     public Task processTaskByType(String type, String item) throws ChatBotException {
         Task task;
         if (type.equals("T")) {
