@@ -3,6 +3,7 @@ package diligentpenguin;
 import java.io.FileNotFoundException;
 
 import diligentpenguin.command.Parser;
+import diligentpenguin.exception.ChatBotException;
 import diligentpenguin.task.TaskList;
 
 
@@ -43,10 +44,7 @@ public class DiligentPenguin {
         try {
             return parser.parse(input);
         } catch (Exception e) {
-            String message = "Oops! there seems to be an error:\n"
-                    + e.getMessage()
-                    + "\nPlease try again!";
-            return message;
+            return e.getMessage();
         }
     }
 

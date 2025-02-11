@@ -1,12 +1,19 @@
 package diligentpenguin.command;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.Objects;
 
-import diligentpenguin.ChatBotException;
+import diligentpenguin.exception.ChatBotException;
 import diligentpenguin.DiligentPenguin;
 import diligentpenguin.Storage;
 import diligentpenguin.Ui;
+import diligentpenguin.exception.DeadlineException;
+import diligentpenguin.exception.EventException;
+import diligentpenguin.exception.InvalidDateTimeFormatException;
+import diligentpenguin.exception.InvalidIndexException;
+import diligentpenguin.exception.ToDoException;
+import diligentpenguin.exception.UnknownCommandException;
 import diligentpenguin.task.Deadline;
 import diligentpenguin.task.Event;
 import diligentpenguin.task.Task;
@@ -48,7 +55,7 @@ public class Parser {
                 storage.save(diligentPenguin.getTasks());
                 return ui.generateMarkMessage(diligentPenguin.getTasks().get(index).toString(), index);
             } catch (IndexOutOfBoundsException e) {
-                throw new ChatBotException("That's not a valid item index!");
+                throw new InvalidIndexException();
             }
         } else if (command.matches("unmark \\d+")) {
             int index = Integer.parseInt(command.substring(7)) - 1;
@@ -57,7 +64,7 @@ public class Parser {
                 storage.save(diligentPenguin.getTasks());
                 return ui.generateUnmarkMessage(diligentPenguin.getTasks().get(index).toString(), index);
             } catch (IndexOutOfBoundsException e) {
-                throw new ChatBotException("That's not a valid item index!");
+                throw new InvalidIndexException();
             }
         } else if (command.matches("delete \\d+")) {
             int index = Integer.parseInt(command.substring(7)) - 1;
@@ -67,7 +74,7 @@ public class Parser {
                 storage.save(diligentPenguin.getTasks());
                 return ui.generateDeleteMessage(task.toString(), index);
             } catch (IndexOutOfBoundsException e) {
-                throw new ChatBotException("That's not a valid item index!");
+                throw new InvalidIndexException();
             }
         } else if (command.startsWith("find ")) {
             String keyword = command.substring(5);
@@ -81,8 +88,7 @@ public class Parser {
         } else if (command.startsWith("todo ")) {
             String description = command.substring(5);
             if (description.trim().isEmpty()) {
-                throw new ChatBotException("Did you forget to specify name of the task? \n"
-                        + ToDoCommand.getCommandInfo());
+                throw new ToDoException();
             }
             ToDo todoTask = new ToDo(description);
             diligentPenguin.getTasks().add(todoTask);
@@ -91,7 +97,7 @@ public class Parser {
         } else if (command.startsWith("deadline ")) {
             String item = command.substring(9);
             if (!item.contains("/by")) {
-                throw new ChatBotException(DeadlineCommand.getCommandInfo());
+                throw new DeadlineException();
             }
             // The piece of code in between is inspired by a conversation with chatGPT
             int index = item.indexOf("/by");
@@ -101,18 +107,21 @@ public class Parser {
 
             // Extract the part after "/by"
             String deadline = item.substring(index + 3).trim();
-            LocalDate formattedDeadline = LocalDate.parse(deadline, Task.getInputFormatter());
+            try {
+                LocalDate formattedDeadline = LocalDate.parse(deadline, Task.getInputFormatter());
+                Deadline deadlineTask = new Deadline(description, formattedDeadline);
+                diligentPenguin.getTasks().add(deadlineTask);
+                storage.save(diligentPenguin.getTasks());
+                return ui.generateStoreMessage(diligentPenguin.getTasks().getSize());
+            } catch (DateTimeParseException e) {
+                throw new InvalidDateTimeFormatException();
+            }
             // The piece of code in between is inspired by a conversation with chatGPT
-
-            Deadline deadlineTask = new Deadline(description, formattedDeadline);
-            diligentPenguin.getTasks().add(deadlineTask);
-            storage.save(diligentPenguin.getTasks());
-            return ui.generateStoreMessage(diligentPenguin.getTasks().getSize());
         } else if (command.startsWith("event ")) {
             String item = command.substring(6);
 
             if (!item.contains("/from") || !item.contains("/to")) {
-                throw new ChatBotException(EventCommand.getCommandInfo());
+                throw new EventException();
             }
             int indexFrom = item.indexOf("/from");
             int indexTo = item.indexOf("/to");
@@ -122,17 +131,21 @@ public class Parser {
             String endTime = item.substring(indexTo + 3).trim();
 
             if (description.isEmpty() || startTime.isEmpty() || endTime.isEmpty()) {
-                throw new ChatBotException(EventCommand.getCommandInfo());
+                throw new EventException();
             }
-            LocalDate formattedStartTime = LocalDate.parse(startTime, Task.getInputFormatter());
-            LocalDate formattedEndTime = LocalDate.parse(endTime, Task.getInputFormatter());
+            try {
+                LocalDate formattedStartTime = LocalDate.parse(startTime, Task.getInputFormatter());
+                LocalDate formattedEndTime = LocalDate.parse(endTime, Task.getInputFormatter());
 
-            Event eventTask = new Event(description, formattedStartTime, formattedEndTime);
-            diligentPenguin.getTasks().add(eventTask);
-            storage.save(diligentPenguin.getTasks());
-            return ui.generateStoreMessage(diligentPenguin.getTasks().getSize());
+                Event eventTask = new Event(description, formattedStartTime, formattedEndTime);
+                diligentPenguin.getTasks().add(eventTask);
+                storage.save(diligentPenguin.getTasks());
+                return ui.generateStoreMessage(diligentPenguin.getTasks().getSize());
+            } catch (DateTimeParseException e) {
+                throw new InvalidDateTimeFormatException();
+            }
         } else {
-            return ui.generateUnknownCommandMessage();
+            throw new UnknownCommandException();
         }
     }
 }

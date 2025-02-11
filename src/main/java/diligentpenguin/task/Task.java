@@ -7,8 +7,10 @@ import java.time.format.DateTimeFormatter;
  * A <code>Task</code> object has a name, a completion status and a type
  */
 public class Task {
-    private static final DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-    private static final DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("EEEE, MMMM d, yyyy");
+    private static final String INPUT_DATE_TIME_STRING = "dd/MM/yyyy";
+    private static final String OUTPUT_DATE_TIME_STRING = "EEEE, MMMM d, yyyy";
+    private static final DateTimeFormatter INPUT_FORMATTER = DateTimeFormatter.ofPattern(INPUT_DATE_TIME_STRING);
+    private static final DateTimeFormatter OUTPUT_FORMATTER = DateTimeFormatter.ofPattern(OUTPUT_DATE_TIME_STRING);
     private String name = "";
     private String type = "";
     private Boolean isDone = false;
@@ -53,11 +55,19 @@ public class Task {
     }
 
     public static DateTimeFormatter getInputFormatter() {
-        return inputFormatter;
+        return INPUT_FORMATTER;
     }
 
     public static DateTimeFormatter getOutputFormatter() {
-        return outputFormatter;
+        return OUTPUT_FORMATTER;
+    }
+
+    public static String getInputDateTimeString() {
+        return INPUT_DATE_TIME_STRING;
+    }
+
+    public static String getOutputDateTimeString() {
+        return OUTPUT_DATE_TIME_STRING;
     }
 
     /**

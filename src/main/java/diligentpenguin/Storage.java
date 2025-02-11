@@ -9,6 +9,7 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import diligentpenguin.exception.ChatBotException;
 import diligentpenguin.task.Deadline;
 import diligentpenguin.task.Event;
 import diligentpenguin.task.Task;

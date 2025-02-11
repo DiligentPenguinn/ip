@@ -1,4 +1,4 @@
-package diligentpenguin;
+package diligentpenguin.exception;
 
 /**
  * Customized exception for the chatbot.
