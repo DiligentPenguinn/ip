@@ -9,6 +9,7 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import diligentpenguin.exception.ChatBotException;
 import diligentpenguin.task.Deadline;
 import diligentpenguin.task.Event;
 import diligentpenguin.task.Task;
@@ -66,13 +67,19 @@ public class Storage {
     private static Task readTask(String line) throws ChatBotException, DateTimeParseException {
         assert line != null : "Line to read should not be null!";
         Task task;
+        int deadlineTaskLength = 4;
+        int deadlineIndex = 3;
+
+        int eventTaskLength = 5;
+        int eventStartTimeIndex = 3;
+        int eventEndTimeIndex = 4;
         String[] parts = line.split("\\|");
         String type = parts[0].trim();
         boolean isDone = parts[1].trim().equals("X");
         String description = parts[2].trim();
-        String deadline = (parts.length == 4) ? parts[3].trim() : "";
-        String startTime = (parts.length == 5) ? parts[3].trim() : "";
-        String endTime = (parts.length == 5) ? parts[4].trim() : "";
+        String deadline = (parts.length == deadlineTaskLength) ? parts[deadlineIndex].trim() : "";
+        String startTime = (parts.length == eventTaskLength ) ? parts[eventStartTimeIndex].trim() : "";
+        String endTime = (parts.length == eventTaskLength) ? parts[eventEndTimeIndex].trim() : "";
         // The above code is inspired by a conversation with chatGPT
         switch (type) {
         case "T":
