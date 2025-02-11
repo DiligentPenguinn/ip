@@ -63,6 +63,15 @@ public class TaskList {
     }
 
     /**
+     * Set a task in the given index
+     * @param i index to set
+     * @param task Task to set to the given index
+     */
+    public void set(int i, Task task) {
+        this.list.set(i, task);
+    }
+
+    /**
      * Mark a task in the list as completed
      * @param i Index of the task to mark
      */

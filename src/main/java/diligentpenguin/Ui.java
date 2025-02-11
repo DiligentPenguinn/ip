@@ -73,6 +73,10 @@ public class Ui {
         return "Noted! I'll delete task " + (i + 1) + " from the list: \n" + task;
     }
 
+    public String generateUpdateMessage() {
+        return "Noted! I'll update this task, please edit the task and send it to me.";
+    }
+
     /**
      * Generates a message confirming the task list has been successfully loaded
      * @param tasks Loaded tasks string
@@ -80,6 +84,10 @@ public class Ui {
      */
     public String generateLoadSuccessMessage(String tasks) {
         return "I have successfully loaded the previous task list for you!\n" + generateListMessage(tasks);
+    }
+
+    public String generateUpdateSuccessMessage(String tasks) {
+        return "I have updated successfully! Here's the tasks again: \n" + tasks;
     }
 
     /**

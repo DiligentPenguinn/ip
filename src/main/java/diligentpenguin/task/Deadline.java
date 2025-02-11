@@ -24,13 +24,21 @@ public class Deadline extends Task {
     public String toString() {
         String mark = this.isDone() ? "X" : " ";
         return String.format("[%s][%s] %s (by: %s)",
-                this.getType(), mark, this.getName(), this.deadline.format(Deadline.getOutputFormatter()));
+                this.getType(), mark, this.getName(), this.deadline.format(Task.getOutputFormatter()));
     }
 
     @Override
     public String toSavedString() {
         String mark = this.isDone() ? "X" : " ";
         return String.format("%s | %s | %s | %s",
-                this.getType(), mark, this.getName(), this.deadline.format(Deadline.getInputFormatter()));
+                this.getType(), mark, this.getName(), this.deadline.format(Task.getInputFormatter()));
+    }
+
+    @Override
+    public String toEditString(int index) {
+        return String.format("update-%d deadline %s /by %s",
+                index,
+                this.getName(),
+                this.deadline.format(Task.getInputFormatter()));
     }
 }

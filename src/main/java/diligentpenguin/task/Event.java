@@ -28,8 +28,8 @@ public class Event extends Task {
         String mark = this.isDone() ? "X" : " ";
         return String.format("[%s][%s] %s (from: %s to: %s)",
                 this.getType(), mark, this.getName(),
-                this.startTime.format(Event.getOutputFormatter()),
-                this.endTime.format(Event.getOutputFormatter()));
+                this.startTime.format(Task.getOutputFormatter()),
+                this.endTime.format(Task.getOutputFormatter()));
     }
 
     @Override
@@ -37,7 +37,16 @@ public class Event extends Task {
         String mark = this.isDone() ? "X" : " ";
         return String.format("%s | %s | %s | %s | %s",
                 this.getType(), mark, this.getName(),
-                this.startTime.format(Event.getInputFormatter()),
-                this.endTime.format(Event.getInputFormatter()));
+                this.startTime.format(Task.getInputFormatter()),
+                this.endTime.format(Task.getInputFormatter()));
+    }
+
+    @Override
+    public String toEditString(int index) {
+        return String.format("update-%d event %s /from %s /to %s",
+                index,
+                this.getName(),
+                this.startTime.format(Task.getInputFormatter()),
+                this.endTime.format(Task.getInputFormatter()));
     }
 }

@@ -58,12 +58,16 @@ public class MainWindow extends AnchorPane {
     @FXML
     private void handleUserInput() {
         String input = userInput.getText();
-        String response = diligentPenguin.getResponse(input);
+        String[] responses = diligentPenguin.getResponse(input);
+        String response = responses[0];
+        String output = responses[1];
+
         dialogContainer.getChildren().addAll(
                 DialogBox.getUserDialog(input, userImage),
                 DialogBox.getDpDialog(response, chatbotImage)
         );
         userInput.clear();
+        userInput.setText(output);
         if (diligentPenguin.isOver()) {
             stage.close();
         }

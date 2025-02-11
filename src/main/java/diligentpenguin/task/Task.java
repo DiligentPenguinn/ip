@@ -85,4 +85,9 @@ public class Task {
     public String toSavedString() {
         return "";
     }
+
+    /**
+     * @return a string formatted for editing purpose
+     */
+    public String toEditString(int index) { return ""; }
 }

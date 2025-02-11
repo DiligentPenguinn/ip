@@ -3,6 +3,8 @@ package diligentpenguin.command;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import diligentpenguin.exception.ChatBotException;
 import diligentpenguin.DiligentPenguin;
@@ -35,44 +37,145 @@ public class Parser {
         this.storage = storage;
     }
 
+    public ToDo processToDoTask(String item) throws ChatBotException {
+        if (item.trim().isEmpty()) {
+            throw new ToDoException();
+        }
+        return new ToDo(item);
+    }
+
+    public Deadline processDeadlineTask(String item) throws ChatBotException {
+        if (!item.contains("/by")) {
+            throw new DeadlineException();
+        }
+        // The piece of code in between is inspired by a conversation with chatGPT
+        int index = item.indexOf("/by");
+
+        // Extract the part before "/by"
+        String description = item.substring(0, index).trim();
+
+        // Extract the part after "/by"
+        String deadline = item.substring(index + 3).trim();
+        try {
+            LocalDate formattedDeadline = LocalDate.parse(deadline, Task.getInputFormatter());
+            return new Deadline(description, formattedDeadline);
+
+        } catch (DateTimeParseException e) {
+            throw new InvalidDateTimeFormatException();
+        }
+    }
+
+    public Event processEventTask(String item) throws ChatBotException {
+        if (!item.contains("/from") || !item.contains("/to")) {
+            throw new EventException();
+        }
+        int indexFrom = item.indexOf("/from");
+        int indexTo = item.indexOf("/to");
+
+        String description = item.substring(0, indexFrom).trim();
+        String startTime = item.substring(indexFrom + 5, indexTo).trim();
+        String endTime = item.substring(indexTo + 3).trim();
+
+        if (description.isEmpty() || startTime.isEmpty() || endTime.isEmpty()) {
+            throw new EventException();
+        }
+        try {
+            LocalDate formattedStartTime = LocalDate.parse(startTime, Task.getInputFormatter());
+            LocalDate formattedEndTime = LocalDate.parse(endTime, Task.getInputFormatter());
+
+            return new Event(description, formattedStartTime, formattedEndTime);
+        } catch (DateTimeParseException e) {
+            throw new InvalidDateTimeFormatException();
+        }
+    }
+
+    public Task processTaskByType(String type, String item) throws ChatBotException {
+        Task task;
+        if (type.equals("T")) {
+            task = processToDoTask(item);
+        } else if (type.equals("D")) {
+            task = processDeadlineTask(item);
+        } else if (type.equals("E")) {
+            task = processEventTask(item);
+        } else {
+            throw new ChatBotException("Task cannot be processed!");
+        }
+        return task;
+    }
+
     /**
      * Parse and execute the user command
      * @param command Command to parse and execute
      * @return The response from Ui
      * @throws ChatBotException If error occurs while parsing and executing
      */
-    public String parse(String command) throws ChatBotException {
+    public String[] parse(String command) throws ChatBotException {
+        String response = "";
+        String output = "";
         if (Objects.equals(command, "bye")) {
             diligentPenguin.setOver();
-            return ui.generateExitMessage();
+            response = ui.generateExitMessage();
         } else if (Objects.equals(command, "list")) {
-            return ui.generateListMessage(diligentPenguin.getTasks().toString());
+            response = ui.generateListMessage(diligentPenguin.getTasks().toString());
             // Use of Regex below is adapted from a conversation with chatGPT
         } else if (command.matches("mark \\d+")) {
-            int index = Integer.parseInt(command.substring(5)) - 1;
+            int lengthOfMark = 4;
+            int index = Integer.parseInt(command.substring(lengthOfMark + 1)) - 1;
             try {
                 diligentPenguin.getTasks().finish(index);
                 storage.save(diligentPenguin.getTasks());
-                return ui.generateMarkMessage(diligentPenguin.getTasks().get(index).toString(), index);
+                response = ui.generateMarkMessage(diligentPenguin.getTasks().get(index).toString(), index);
             } catch (IndexOutOfBoundsException e) {
                 throw new InvalidIndexException();
             }
         } else if (command.matches("unmark \\d+")) {
-            int index = Integer.parseInt(command.substring(7)) - 1;
+            int lengthOfUnmark = 6;
+            int index = Integer.parseInt(command.substring(lengthOfUnmark + 1)) - 1;
             try {
                 diligentPenguin.getTasks().unfinish(index);
                 storage.save(diligentPenguin.getTasks());
-                return ui.generateUnmarkMessage(diligentPenguin.getTasks().get(index).toString(), index);
+                response = ui.generateUnmarkMessage(diligentPenguin.getTasks().get(index).toString(), index);
             } catch (IndexOutOfBoundsException e) {
                 throw new InvalidIndexException();
             }
         } else if (command.matches("delete \\d+")) {
-            int index = Integer.parseInt(command.substring(7)) - 1;
+            int lengthOfDelete = 6;
+            int index = Integer.parseInt(command.substring(lengthOfDelete + 1)) - 1;
             try {
                 Task task = diligentPenguin.getTasks().get(index);
                 diligentPenguin.getTasks().remove(index);
                 storage.save(diligentPenguin.getTasks());
-                return ui.generateDeleteMessage(task.toString(), index);
+                response = ui.generateDeleteMessage(task.toString(), index);
+            } catch (IndexOutOfBoundsException e) {
+                throw new InvalidIndexException();
+            }
+        } else if (command.matches("update \\d+")) {
+            int lengthOfUpdate = 6;
+            int index = Integer.parseInt(command.substring(lengthOfUpdate + 1)) - 1;
+            try {
+                Task task = diligentPenguin.getTasks().get(index);
+                response = ui.generateUpdateMessage();
+                output = task.toEditString(index + 1);
+            } catch (IndexOutOfBoundsException e) {
+                throw new InvalidIndexException();
+            }
+        } else if (command.matches("^update-\\d+ .+")) {
+            try {
+                String regex = "^update-(\\d+) (.+)";
+
+                Pattern pattern = Pattern.compile(regex);
+                Matcher matcher = pattern.matcher(command);
+
+                if (matcher.matches()) {
+                    int index = Integer.parseInt(matcher.group(1)) - 1;
+                    System.out.println(index);
+                    String taskDescription = matcher.group(2);
+                    Task task = diligentPenguin.getTasks().get(index);
+                    String type = task.getType();
+                    Task newTask = processTaskByType(type, taskDescription);
+                    diligentPenguin.getTasks().set(index, newTask);
+                    response = ui.generateUpdateSuccessMessage(diligentPenguin.getTasks().toString());
+                }
             } catch (IndexOutOfBoundsException e) {
                 throw new InvalidIndexException();
             }
@@ -80,72 +183,33 @@ public class Parser {
             String keyword = command.substring(5);
             TaskList filteredTasks = diligentPenguin.getTasks().find(keyword);
             if (filteredTasks.isEmpty()) {
-                return ui.generateNoTasksFoundMessage();
+                return new String[]{ui.generateNoTasksFoundMessage()};
             } else {
-                return ui.generateMatchingTasks(filteredTasks.toString());
+                response = ui.generateMatchingTasks(filteredTasks.toString());
             }
             // Three cases above can be combined
         } else if (command.startsWith("todo ")) {
             String description = command.substring(5);
-            if (description.trim().isEmpty()) {
-                throw new ToDoException();
-            }
-            ToDo todoTask = new ToDo(description);
+            ToDo todoTask = processToDoTask(description);
             diligentPenguin.getTasks().add(todoTask);
             storage.save(diligentPenguin.getTasks());
-            return ui.generateStoreMessage(diligentPenguin.getTasks().getSize());
+            response = ui.generateStoreMessage(diligentPenguin.getTasks().getSize());
         } else if (command.startsWith("deadline ")) {
             String item = command.substring(9);
-            if (!item.contains("/by")) {
-                throw new DeadlineException();
-            }
-            // The piece of code in between is inspired by a conversation with chatGPT
-            int index = item.indexOf("/by");
-
-            // Extract the part before "/by"
-            String description = item.substring(0, index).trim();
-
-            // Extract the part after "/by"
-            String deadline = item.substring(index + 3).trim();
-            try {
-                LocalDate formattedDeadline = LocalDate.parse(deadline, Task.getInputFormatter());
-                Deadline deadlineTask = new Deadline(description, formattedDeadline);
-                diligentPenguin.getTasks().add(deadlineTask);
-                storage.save(diligentPenguin.getTasks());
-                return ui.generateStoreMessage(diligentPenguin.getTasks().getSize());
-            } catch (DateTimeParseException e) {
-                throw new InvalidDateTimeFormatException();
-            }
+            Deadline deadlineTask = processDeadlineTask(item);
+            diligentPenguin.getTasks().add(deadlineTask);
+            storage.save(diligentPenguin.getTasks());
+            response = ui.generateStoreMessage(diligentPenguin.getTasks().getSize());
             // The piece of code in between is inspired by a conversation with chatGPT
         } else if (command.startsWith("event ")) {
             String item = command.substring(6);
-
-            if (!item.contains("/from") || !item.contains("/to")) {
-                throw new EventException();
-            }
-            int indexFrom = item.indexOf("/from");
-            int indexTo = item.indexOf("/to");
-
-            String description = item.substring(0, indexFrom).trim();
-            String startTime = item.substring(indexFrom + 5, indexTo).trim();
-            String endTime = item.substring(indexTo + 3).trim();
-
-            if (description.isEmpty() || startTime.isEmpty() || endTime.isEmpty()) {
-                throw new EventException();
-            }
-            try {
-                LocalDate formattedStartTime = LocalDate.parse(startTime, Task.getInputFormatter());
-                LocalDate formattedEndTime = LocalDate.parse(endTime, Task.getInputFormatter());
-
-                Event eventTask = new Event(description, formattedStartTime, formattedEndTime);
-                diligentPenguin.getTasks().add(eventTask);
-                storage.save(diligentPenguin.getTasks());
-                return ui.generateStoreMessage(diligentPenguin.getTasks().getSize());
-            } catch (DateTimeParseException e) {
-                throw new InvalidDateTimeFormatException();
-            }
+            Event eventTask = processEventTask(item);
+            diligentPenguin.getTasks().add(eventTask);
+            storage.save(diligentPenguin.getTasks());
+            response = ui.generateStoreMessage(diligentPenguin.getTasks().getSize());
         } else {
             throw new UnknownCommandException();
         }
+        return new String[]{response, output};
     }
 }

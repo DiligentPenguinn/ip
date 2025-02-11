@@ -20,4 +20,9 @@ public class ToDo extends Task {
         String mark = this.isDone() ? "X" : " ";
         return String.format("%s | %s | %s", this.getType(), mark, this.getName());
     }
+
+    @Override
+    public String toEditString(int index) {
+        return String.format("update-%d todo %s", index, this.getName());
+    }
 }

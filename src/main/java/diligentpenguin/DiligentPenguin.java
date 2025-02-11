@@ -37,12 +37,12 @@ public class DiligentPenguin {
     /**
      * Generates a response for the user's chat message.
      */
-    public String getResponse(String input) {
+    public String[] getResponse(String input) {
         assert input != null : "User input should not be null!";
         try {
             return parser.parse(input);
         } catch (Exception e) {
-            return e.getMessage();
+            return new String[]{e.getMessage(), ""};
         }
     }
 
