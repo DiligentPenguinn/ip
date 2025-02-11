@@ -30,8 +30,8 @@ public class Ui {
      * @return Store confirmation message
      */
     public String generateStoreMessage(int size) {
-        return "Noted. I will write this down for you!\n" +
-                String.format("I have noted down a total of %d tasks for you \n", size);
+        return "Noted. I will write this down for you!\n"
+                + String.format("I have noted down a total of %d tasks for you \n", size);
     }
 
     /**
