@@ -26,8 +26,8 @@ public class MainWindow extends AnchorPane {
     private DiligentPenguin diligentPenguin;
     private Stage stage;
 
-    private Image userImage = new Image(this.getClass().getResourceAsStream("/images/user.png"));
-    private Image chatbotImage = new Image(this.getClass().getResourceAsStream("/images/chatbot.png"));
+    private final Image userImage = new Image(this.getClass().getResourceAsStream("/images/user.png"));
+    private final Image chatbotImage = new Image(this.getClass().getResourceAsStream("/images/chatbot.png"));
 
     @FXML
     public void initialize() {

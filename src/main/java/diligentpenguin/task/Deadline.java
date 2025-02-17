@@ -36,7 +36,7 @@ public class Deadline extends Task {
 
     @Override
     public String toEditString(int index) {
-        return String.format("update-%d deadline %s /by %s",
+        return String.format("update-%d %s /by %s",
                 index,
                 this.getName(),
                 this.deadline.format(Task.getInputFormatter()));

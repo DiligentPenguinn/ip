@@ -23,6 +23,6 @@ public class ToDo extends Task {
 
     @Override
     public String toEditString(int index) {
-        return String.format("update-%d todo %s", index, this.getName());
+        return String.format("update-%d %s", index, this.getName());
     }
 }

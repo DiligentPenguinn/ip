@@ -43,7 +43,7 @@ public class Event extends Task {
 
     @Override
     public String toEditString(int index) {
-        return String.format("update-%d event %s /from %s /to %s",
+        return String.format("update-%d %s /from %s /to %s",
                 index,
                 this.getName(),
                 this.startTime.format(Task.getInputFormatter()),
