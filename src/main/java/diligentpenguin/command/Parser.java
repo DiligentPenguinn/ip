@@ -11,12 +11,17 @@ import diligentpenguin.Storage;
 import diligentpenguin.Ui;
 import diligentpenguin.exception.ChatBotException;
 import diligentpenguin.exception.DeadlineException;
+import diligentpenguin.exception.DeleteException;
 import diligentpenguin.exception.DetailedUpdateException;
 import diligentpenguin.exception.EventException;
+import diligentpenguin.exception.FindException;
 import diligentpenguin.exception.InvalidDateTimeFormatException;
 import diligentpenguin.exception.InvalidIndexException;
+import diligentpenguin.exception.MarkException;
 import diligentpenguin.exception.ToDoException;
 import diligentpenguin.exception.UnknownCommandException;
+import diligentpenguin.exception.UnmarkException;
+import diligentpenguin.exception.UpdateException;
 import diligentpenguin.task.Deadline;
 import diligentpenguin.task.Event;
 import diligentpenguin.task.Task;
@@ -156,6 +161,10 @@ public class Parser {
      * @throws ChatBotException Exception occurs during the process
      */
     public String processMarkCommand(String command) throws ChatBotException {
+        // Use of Regex below is adapted from a conversation with chatGPT
+        if (!command.matches("mark \\d+")) {
+            throw new MarkException();
+        }
         int lengthOfMark = 4;
         int index = Integer.parseInt(command.substring(lengthOfMark + 1)) - 1;
         try {
@@ -174,6 +183,9 @@ public class Parser {
      * @throws ChatBotException Exception occurs during the process
      */
     public String processUnmarkCommand(String command) throws ChatBotException {
+        if (!command.matches("unmark \\d+")) {
+            throw new UnmarkException();
+        }
         int lengthOfUnmark = 6;
         int index = Integer.parseInt(command.substring(lengthOfUnmark + 1)) - 1;
         try {
@@ -192,6 +204,9 @@ public class Parser {
      * @throws ChatBotException Exception occurs during the process
      */
     public String processDeleteCommand(String command) throws ChatBotException {
+        if (!command.matches("delete \\d+")) {
+            throw new DeleteException();
+        }
         int lengthOfDelete = 6;
         int index = Integer.parseInt(command.substring(lengthOfDelete + 1)) - 1;
         try {
@@ -210,7 +225,10 @@ public class Parser {
      * @return Response from the chatbot as well as pre-typed output for the user
      * @throws ChatBotException Exception occurs during the process
      */
-    public String[] processUpdateCommand(String command) throws ChatBotException {
+    public String[] processShortUpdateCommand(String command) throws ChatBotException {
+        if (!command.matches("update \\d+")) {
+            throw new UpdateException();
+        }
         int lengthOfUpdate = 6;
         int index = Integer.parseInt(command.substring(lengthOfUpdate + 1)) - 1;
         try {
@@ -253,12 +271,34 @@ public class Parser {
     }
 
     /**
+     * Process general update commands (either short or detailed)
+     * @param command Command to process
+     * @return strings of response and pre-typed output for the user
+     * @throws ChatBotException Exceptions occur durring the process
+     */
+    public String[] processUpdateCommand(String command) throws ChatBotException {
+        if (command.length() == 4) {
+            throw new UpdateException();
+        }
+        if (command.matches("update \\d+")) {
+            return processShortUpdateCommand(command);
+        } else if (command.matches("^update-(\\d+) (.+)")) {
+            return new String[]{processDetailedUpdateCommand(command), ""};
+        } else {
+            throw new UpdateException();
+        }
+    }
+
+    /**
      * Process a find command from the user
      * @param command Command to process
      * @return Response from the chatbot
      */
-    public String processFindCommand(String command) {
+    public String processFindCommand(String command) throws ChatBotException {
         int lengthOfFind = 4;
+        if (command.length() == lengthOfFind) {
+            throw new FindException();
+        }
         String keyword = command.substring(lengthOfFind + 1);
         TaskList filteredTasks = diligentPenguin.getTasks().find(keyword);
         if (filteredTasks.isEmpty()) {
@@ -274,7 +314,11 @@ public class Parser {
      * @return Response from the chatbot
      */
     public String processToDoCommand(String command) throws ChatBotException {
-        String description = command.substring(5);
+        int todoLength = "todo".length();
+        if (command.length() == todoLength) {
+            throw new ToDoException();
+        }
+        String description = command.substring(todoLength + 1);
         ToDo todoTask = processToDoTask(description);
         diligentPenguin.getTasks().add(todoTask);
         storage.save(diligentPenguin.getTasks());
@@ -287,7 +331,11 @@ public class Parser {
      * @return Response from the chatbot
      */
     public String processDeadlineCommand(String command) throws ChatBotException {
-        String item = command.substring(9);
+        int deadlineLength = "deadline".length();
+        if (command.length() == deadlineLength) {
+            throw new DeadlineException();
+        }
+        String item = command.substring(deadlineLength + 1);
         Deadline deadlineTask = processDeadlineTask(item);
         diligentPenguin.getTasks().add(deadlineTask);
         storage.save(diligentPenguin.getTasks());
@@ -300,7 +348,11 @@ public class Parser {
      * @return Response from the chatbot
      */
     public String processEventCommand(String command) throws ChatBotException {
-        String item = command.substring(6);
+        int eventLength = "event".length();
+        if (command.length() == eventLength) {
+            throw new EventException();
+        }
+        String item = command.substring(eventLength + 1);
         Event eventTask = processEventTask(item);
         diligentPenguin.getTasks().add(eventTask);
         storage.save(diligentPenguin.getTasks());
@@ -321,27 +373,24 @@ public class Parser {
             response = processByeCommand();
         } else if (Objects.equals(command, "list")) {
             response = processListCommand();
-            // Use of Regex below is adapted from a conversation with chatGPT
-        } else if (command.matches("mark \\d+")) {
+        } else if (command.startsWith("mark")) {
             response = processMarkCommand(command);
-        } else if (command.matches("unmark \\d+")) {
+        } else if (command.startsWith("unmark")) {
             response = processUnmarkCommand(command);
-        } else if (command.matches("delete \\d+")) {
+        } else if (command.startsWith("delete")) {
             response = processDeleteCommand(command);
-        } else if (command.matches("update \\d+")) {
+        } else if (command.startsWith("update")) {
             String[] results = processUpdateCommand(command);
             response = results[0];
             output = results[1];
-        } else if (command.matches("^update-\\d+ .+")) {
-            response = processDetailedUpdateCommand(command);
-        } else if (command.startsWith("find ")) {
+        } else if (command.startsWith("find")) {
             response = processFindCommand(command);
-            // Three cases above can be combined
-        } else if (command.startsWith("todo ")) {
+            // Three cases below can be combined
+        } else if (command.startsWith("todo")) {
             response = processToDoCommand(command);
-        } else if (command.startsWith("deadline ")) {
+        } else if (command.startsWith("deadline")) {
             response = processDeadlineCommand(command);
-        } else if (command.startsWith("event ")) {
+        } else if (command.startsWith("event")) {
             response = processEventCommand(command);
         } else {
             throw new UnknownCommandException();
