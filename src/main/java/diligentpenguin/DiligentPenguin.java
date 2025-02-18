@@ -1,7 +1,5 @@
 package diligentpenguin;
 
-import java.io.FileNotFoundException;
-
 import diligentpenguin.command.Parser;
 import diligentpenguin.exception.ChatBotException;
 import diligentpenguin.task.TaskList;
