@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 import diligentpenguin.DiligentPenguin;
 import diligentpenguin.Storage;
 import diligentpenguin.Ui;
+import diligentpenguin.exception.BadDateTimeException;
 import diligentpenguin.exception.ChatBotException;
 import diligentpenguin.exception.DeadlineException;
 import diligentpenguin.exception.DeleteException;
@@ -110,14 +111,19 @@ public class Parser {
             throw new EventException();
         }
 
+        LocalDate formattedStartTime;
+        LocalDate formattedEndTime;
         try {
-            LocalDate formattedStartTime = LocalDate.parse(startTime, Task.getInputFormatter());
-            LocalDate formattedEndTime = LocalDate.parse(endTime, Task.getInputFormatter());
-
-            return new Event(description, formattedStartTime, formattedEndTime);
+            formattedStartTime = LocalDate.parse(startTime, Task.getInputFormatter());
+            formattedEndTime = LocalDate.parse(endTime, Task.getInputFormatter());
         } catch (DateTimeParseException e) {
             throw new InvalidDateTimeFormatException();
         }
+
+        if (formattedEndTime.isBefore(formattedStartTime)) {
+            throw new BadDateTimeException();
+        }
+        return new Event(description, formattedStartTime, formattedEndTime);
     }
 
     /**
