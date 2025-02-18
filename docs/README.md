@@ -1,7 +1,5 @@
 # DiligentPenguin Chatbot User Guide
 
-// Product screenshot goes here
-
 ![A screenshot of the project GUI](Ui.png)
 
 Diligent Penguin is a simple and efficient chatbot application designed to 
@@ -88,7 +86,8 @@ Format 2 (detailed command): `update-<task_index> <task description>`
 
 This command updates the task at the given index with the new description
 
-Examples: 
+Examples:
+
 ![An example for short command](updateExample.png)
 
 ![An example for long command](updateExample2.png)
