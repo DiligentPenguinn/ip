@@ -1,6 +1,7 @@
 package diligentpenguin.gui;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import diligentpenguin.DiligentPenguin;
 import javafx.application.Application;
@@ -14,14 +15,18 @@ import javafx.stage.Stage;
  */
 public class Main extends Application {
 
-    private DiligentPenguin diligentPenguin = new DiligentPenguin("src/main/data/", "tasks.txt");
-
+    private final DiligentPenguin diligentPenguin = new DiligentPenguin("src/main/data/",
+            "tasks.txt");
+    private final String title = "DiligentPenguin Chatbot";
     @Override
     public void start(Stage stage) {
         try {
+            stage.setTitle(title);
             FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/view/MainWindow.fxml"));
             AnchorPane ap = fxmlLoader.load();
             Scene scene = new Scene(ap);
+            scene.getStylesheets().add(Objects.requireNonNull(Main.class
+                    .getResource("/css/dialog-box.css")).toExternalForm());
             stage.setScene(scene);
             fxmlLoader.<MainWindow>getController().setDp(diligentPenguin);
             fxmlLoader.<MainWindow>getController().initializeDp();
