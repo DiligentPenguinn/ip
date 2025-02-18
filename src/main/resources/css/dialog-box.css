@@ -1,5 +1,6 @@
 /* This code is adopted from SE JavaFX tutorial:
-<a href="https://se-education.org/guides/tutorials/javaFxPart5.html">...</a> */
+<a href="https://se-education.org/guides/tutorials/javaFxPart5.html">...</a>
+@author Debbie Hii (@flexibo) */
 .label {
     -fx-background-color: linear-gradient(to bottom right, #00ffbf, #00ddff);
     -fx-border-color: #d55e00 #009e73 #cc79a7 #0072b2;

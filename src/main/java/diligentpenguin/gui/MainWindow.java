@@ -14,6 +14,7 @@ import javafx.stage.Stage;
  * Controller for the main GUI.
  * This class is adopted from SE JavaFX tutorial:
  * <a href="https://se-education.org/guides/tutorials/javaFxPart5.html">...</a>
+ * @author Debbie Hii (@flexibo)
  */
 public class MainWindow extends AnchorPane {
     @FXML

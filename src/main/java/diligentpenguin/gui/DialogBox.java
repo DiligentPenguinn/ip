@@ -19,6 +19,7 @@ import javafx.scene.layout.HBox;
  * and a label containing text from the speaker.
  * This class is adopted from SE JavaFX tutorial:
  * <a href="https://se-education.org/guides/tutorials/javaFxPart5.html">...</a>
+ * @author Debbie Hii (@flexibo)
  */
 public class DialogBox extends HBox {
     @FXML
