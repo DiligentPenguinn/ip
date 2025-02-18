@@ -7,6 +7,7 @@ import diligentpenguin.DiligentPenguin;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
@@ -18,10 +19,12 @@ public class Main extends Application {
     private final DiligentPenguin diligentPenguin = new DiligentPenguin("src/main/data/",
             "tasks.txt");
     private final String title = "DiligentPenguin Chatbot";
+    private final Image iconImage = new Image(this.getClass().getResourceAsStream("/images/icon.png"));
     @Override
     public void start(Stage stage) {
         try {
             stage.setTitle(title);
+            stage.getIcons().add(iconImage);
             FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/view/MainWindow.fxml"));
             AnchorPane ap = fxmlLoader.load();
             Scene scene = new Scene(ap);
