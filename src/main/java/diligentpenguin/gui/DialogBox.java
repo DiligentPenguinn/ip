@@ -13,7 +13,6 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Region;
 
 /**
  * Represents a dialog box consisting of an ImageView to represent the speaker's face
@@ -54,7 +53,6 @@ public class DialogBox extends HBox {
     public static DialogBox getUserDialog(String text, Image img) {
         DialogBox userDb = new DialogBox(text, img);
         userDb.getStyleClass().add("user-dialog");
-//        userDb.dialogContainer.getStyleClass().add("user-text"); // Apply background only to text
         return userDb;
     }
 
@@ -62,7 +60,6 @@ public class DialogBox extends HBox {
         DialogBox botDb = new DialogBox(text, img);
         botDb.flip();
         botDb.getStyleClass().add("bot-dialog");
-//        botDb.dialogContainer.getStyleClass().add("bot-text"); // Apply background only to text
         return botDb;
     }
 }
