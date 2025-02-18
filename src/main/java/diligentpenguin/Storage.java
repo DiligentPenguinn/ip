@@ -58,6 +58,69 @@ public class Storage {
     }
 
     /**
+     * Read a todo task from its description
+     * @param line Description of task to read
+     * @return The <code>ToDo</code> object
+     */
+    private static ToDo readTodoTask(String line) {
+        String[] parts = line.split("\\|");
+        boolean isDone = parts[1].trim().equals("X");
+        String description = parts[2].trim();
+        ToDo task = new ToDo(description);
+        if (isDone) {
+            task.setDone();
+        }
+        return task;
+    }
+
+    /**
+     * Read a deadline task from its description
+     * @param line Description of task to read
+     * @return The <code>Deadline</code> object
+     */
+    private static Deadline readDeadlineTask(String line) {
+        assert line != null : "Line to read should not be null!";
+        int deadlineTaskLength = 4;
+        int deadlineIndex = 3;
+        String[] parts = line.split("\\|");
+        boolean isDone = parts[1].trim().equals("X");
+        String description = parts[2].trim();
+        String deadline = (parts.length == deadlineTaskLength) ? parts[deadlineIndex].trim() : "";
+
+        LocalDate formattedDeadline = LocalDate.parse(deadline, Task.getInputFormatter());
+        Deadline task = new Deadline(description, formattedDeadline);
+        if (isDone) {
+            task.setDone();
+        }
+        return task;
+    }
+
+    /**
+     * Read an event task from its description
+     * @param line Description of task to read
+     * @return The <code>Event</code> object
+     * @throws DateTimeParseException Exception occurs during parsing
+     */
+    private static Event readEventTask(String line) throws DateTimeParseException {
+        assert line != null : "Line to read should not be null!";
+        int eventTaskLength = 5;
+        int eventStartTimeIndex = 3;
+        int eventEndTimeIndex = 4;
+        String[] parts = line.split("\\|");
+        boolean isDone = parts[1].trim().equals("X");
+        String description = parts[2].trim();
+        String startTime = (parts.length == eventTaskLength) ? parts[eventStartTimeIndex].trim() : "";
+        String endTime = (parts.length == eventTaskLength) ? parts[eventEndTimeIndex].trim() : "";
+        LocalDate formattedStartTime = LocalDate.parse(startTime, Task.getInputFormatter());
+        LocalDate formattedEndTime = LocalDate.parse(endTime, Task.getInputFormatter());
+        Event task = new Event(description, formattedStartTime, formattedEndTime);
+        if (isDone) {
+            task.setDone();
+        }
+        return task;
+    }
+
+    /**
      * Read a task from its description
      * @param line Description of task to read
      * @return The <code>Task</code> object
@@ -66,46 +129,15 @@ public class Storage {
      */
     private static Task readTask(String line) throws ChatBotException, DateTimeParseException {
         assert line != null : "Line to read should not be null!";
-        Task task;
-        int deadlineTaskLength = 4;
-        int deadlineIndex = 3;
-
-        int eventTaskLength = 5;
-        int eventStartTimeIndex = 3;
-        int eventEndTimeIndex = 4;
         String[] parts = line.split("\\|");
         String type = parts[0].trim();
-        boolean isDone = parts[1].trim().equals("X");
-        String description = parts[2].trim();
-        String deadline = (parts.length == deadlineTaskLength) ? parts[deadlineIndex].trim() : "";
-        String startTime = (parts.length == eventTaskLength) ? parts[eventStartTimeIndex].trim() : "";
-        String endTime = (parts.length == eventTaskLength) ? parts[eventEndTimeIndex].trim() : "";
-        // The above code is inspired by a conversation with chatGPT
-        switch (type) {
-        case "T":
-            task = new ToDo(description);
-            if (isDone) {
-                task.setDone();
-            }
-            return task;
-        case "D":
-            LocalDate formattedDeadline = LocalDate.parse(deadline, Task.getInputFormatter());
-            task = new Deadline(description, formattedDeadline);
-            if (isDone) {
-                task.setDone();
-            }
-            return task;
-        case "E":
-            LocalDate formattedStartTime = LocalDate.parse(startTime, Task.getInputFormatter());
-            LocalDate formattedEndTime = LocalDate.parse(endTime, Task.getInputFormatter());
-            task = new Event(description, formattedStartTime, formattedEndTime);
-            if (isDone) {
-                task.setDone();
-            }
-            return task;
-        default:
-            throw new ChatBotException("Oops! It seems that the format of the saved file is wrong/corrupted!");
-        }
+        // The code below is refactored with IntelliJ
+        return switch (type) {
+        case "T" -> readTodoTask(line);
+        case "D" -> readDeadlineTask(line);
+        case "E" -> readEventTask(line);
+        default -> throw new ChatBotException("Oops! It seems that the format of the saved file is wrong/corrupted!");
+        };
     }
 
     /**
