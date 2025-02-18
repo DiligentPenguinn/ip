@@ -13,10 +13,10 @@ import diligentpenguin.task.TaskList;
  */
 
 public class DiligentPenguin {
-    private String name = "DiligentPenguin";
+    private final String name = "DiligentPenguin";
     private final Storage storage;
     private final Ui ui;
-    private TaskList tasks = new TaskList();
+    private final TaskList tasks = new TaskList();
     private final Parser parser;
     private boolean isOver = false;
 
@@ -73,9 +73,6 @@ public class DiligentPenguin {
             message = message + ui.generateLoadSuccessMessage(tasks.toString()) + "\n";
         } catch (ChatBotException e) {
             message = message + ui.generateNoDataMessage() + "\n";
-        } catch (FileNotFoundException e) {
-            message = message + ui.generateFileNotFoundError() + "\n";
-            this.storage.createSavedDirectoryAndFile();
         }
 
         return message;

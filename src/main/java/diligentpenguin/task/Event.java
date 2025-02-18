@@ -23,6 +23,14 @@ public class Event extends Task {
         this.endTime = endTime;
     }
 
+    public LocalDate getStartTime() {
+        return startTime;
+    }
+
+    public LocalDate getEndTime() {
+        return endTime;
+    }
+
     @Override
     public String toString() {
         String mark = this.isDone() ? "X" : " ";

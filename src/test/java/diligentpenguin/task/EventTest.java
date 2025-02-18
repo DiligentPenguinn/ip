@@ -3,61 +3,48 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.time.LocalDate;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-/**
- * Unit tests for class <code>Event</code>
- */
-public class EventTest {
-    /**
-     * Tests the <code>toSavedString</code> method for an incomplete task.
-     */
-    @Test
-    public void testToSavedString1() {
-        LocalDate startTime = LocalDate.parse("20/12/2025", Task.getInputFormatter());
-        LocalDate endTime = LocalDate.parse("21/12/2025", Task.getInputFormatter());
-        Event task = new Event("homework", startTime, endTime);
-        String expectedOutput = "E |   | homework | 20/12/2025 | 21/12/2025";
-        assertEquals(expectedOutput, task.toSavedString());
+class EventTest {
+    // This code is adapted from a conversation with chatGPT
+    private Event eventTask;
+    private LocalDate startTime;
+    private LocalDate endTime;
+
+    @BeforeEach
+    void setUp() {
+        startTime = LocalDate.of(2025, 5, 1);
+        endTime = LocalDate.of(2025, 5, 3);
+        eventTask = new Event("Conference", startTime, endTime);
     }
 
-    /**
-     * Tests the <code>toSavedString</code> method for a completed task.
-     */
     @Test
-    public void testToSavedString2() {
-        LocalDate startTime = LocalDate.parse("20/12/2025", Task.getInputFormatter());
-        LocalDate endTime = LocalDate.parse("21/12/2025", Task.getInputFormatter());
-        Event task = new Event("homework", startTime, endTime);
-        task.setDone();
-        String expectedOutput = "E | X | homework | 20/12/2025 | 21/12/2025";
-        assertEquals(expectedOutput, task.toSavedString());
+    void testEventConstructor() {
+        assertEquals("Conference", eventTask.getName());
     }
 
-    /**
-     * Tests the <code>toString</code> method for an incomplete task.
-     */
     @Test
-    public void testToString1() {
-        LocalDate startTime = LocalDate.parse("20/12/2025", Task.getInputFormatter());
-        LocalDate endTime = LocalDate.parse("21/12/2025", Task.getInputFormatter());
-        Event task = new Event("homework", startTime, endTime);
-        String expectedOutput = "[E][ ] homework "
-                + "(from: Saturday, December 20, 2025 to: Sunday, December 21, 2025)";
-        assertEquals(expectedOutput, task.toString());
+    void testToString() {
+        String expected = String.format("[E][ ] Conference (from: %s to: %s)",
+                startTime.format(Task.getOutputFormatter()),
+                endTime.format(Task.getOutputFormatter()));
+        assertEquals(expected, eventTask.toString());
     }
 
-    /**
-     * Tests the <code>toString</code> method for a completed task.
-     */
     @Test
-    public void testToString2() {
-        LocalDate startTime = LocalDate.parse("20/12/2025", Task.getInputFormatter());
-        LocalDate endTime = LocalDate.parse("21/12/2025", Task.getInputFormatter());
-        Event task = new Event("homework", startTime, endTime);
-        task.setDone();
-        String expectedOutput = "[E][X] homework "
-                + "(from: Saturday, December 20, 2025 to: Sunday, December 21, 2025)";
-        assertEquals(expectedOutput, task.toString());
+    void testToSavedString() {
+        String expected = String.format("E |   | Conference | %s | %s",
+                startTime.format(Task.getInputFormatter()),
+                endTime.format(Task.getInputFormatter()));
+        assertEquals(expected, eventTask.toSavedString());
+    }
+
+    @Test
+    void testToEditString() {
+        String expected = String.format("update-2 Conference /from %s /to %s",
+                startTime.format(Task.getInputFormatter()),
+                endTime.format(Task.getInputFormatter()));
+        assertEquals(expected, eventTask.toEditString(2));
     }
 }

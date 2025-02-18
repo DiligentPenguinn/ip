@@ -20,6 +20,10 @@ public class Deadline extends Task {
         this.deadline = deadline;
     }
 
+    public LocalDate getDeadline() {
+        return deadline;
+    }
+
     @Override
     public String toString() {
         String mark = this.isDone() ? "X" : " ";

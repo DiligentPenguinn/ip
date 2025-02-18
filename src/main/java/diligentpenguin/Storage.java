@@ -62,7 +62,7 @@ public class Storage {
      * @param line Description of task to read
      * @return The <code>ToDo</code> object
      */
-    private static ToDo readTodoTask(String line) {
+    static ToDo readTodoTask(String line) {
         String[] parts = line.split("\\|");
         boolean isDone = parts[1].trim().equals("X");
         String description = parts[2].trim();
@@ -78,7 +78,7 @@ public class Storage {
      * @param line Description of task to read
      * @return The <code>Deadline</code> object
      */
-    private static Deadline readDeadlineTask(String line) {
+    static Deadline readDeadlineTask(String line) {
         assert line != null : "Line to read should not be null!";
         int deadlineTaskLength = 4;
         int deadlineIndex = 3;
@@ -101,7 +101,7 @@ public class Storage {
      * @return The <code>Event</code> object
      * @throws DateTimeParseException Exception occurs during parsing
      */
-    private static Event readEventTask(String line) throws DateTimeParseException {
+    static Event readEventTask(String line) throws DateTimeParseException {
         assert line != null : "Line to read should not be null!";
         int eventTaskLength = 5;
         int eventStartTimeIndex = 3;
@@ -127,7 +127,7 @@ public class Storage {
      * @throws ChatBotException If description format is incorrect
      * @throws DateTimeParseException If description datetime format is incorrect
      */
-    private static Task readTask(String line) throws ChatBotException, DateTimeParseException {
+    static Task readTask(String line) throws ChatBotException, DateTimeParseException {
         assert line != null : "Line to read should not be null!";
         String[] parts = line.split("\\|");
         String type = parts[0].trim();
@@ -146,10 +146,15 @@ public class Storage {
      * @throws ChatBotException If no data is found
      * @throws FileNotFoundException If saved file is not found
      */
-    public void loadTaskList(TaskList tasks) throws ChatBotException, FileNotFoundException {
+    public void loadTaskList(TaskList tasks) throws ChatBotException {
         assert tasks != null : "Task list to load should not be null!";
         File file = new File(this.filePath);
-        Scanner scanner = new Scanner(file);
+        Scanner scanner;
+        try {
+            scanner = new Scanner(file);
+        } catch (FileNotFoundException e) {
+            throw new ChatBotException("File not found!");
+        }
         String taskDescription = "";
         while (scanner.hasNext()) {
             try {
