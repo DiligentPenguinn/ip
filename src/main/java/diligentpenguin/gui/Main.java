@@ -13,12 +13,16 @@ import javafx.stage.Stage;
 
 /**
  * A GUI for Duke using FXML.
+ * This class is adopted from SE JavaFX tutorial:
+ * <a href="https://se-education.org/guides/tutorials/javaFxPart5.html">...</a>
  */
 public class Main extends Application {
 
     private final DiligentPenguin diligentPenguin = new DiligentPenguin("src/main/data/",
             "tasks.txt");
     private final String title = "DiligentPenguin Chatbot";
+    // Icon image taken from this source:
+    // https://www.shutterstock.com/image-vector/penguin-flat-vector-illustration-on-white-2459383763
     private final Image iconImage = new Image(this.getClass().getResourceAsStream("/images/icon.png"));
     @Override
     public void start(Stage stage) {

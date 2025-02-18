@@ -12,6 +12,8 @@ import javafx.stage.Stage;
 
 /**
  * Controller for the main GUI.
+ * This class is adopted from SE JavaFX tutorial:
+ * <a href="https://se-education.org/guides/tutorials/javaFxPart5.html">...</a>
  */
 public class MainWindow extends AnchorPane {
     @FXML
@@ -26,6 +28,9 @@ public class MainWindow extends AnchorPane {
     private DiligentPenguin diligentPenguin;
     private Stage stage;
 
+    // User image taken from my Github profile picture: https://github.com/DiligentPenguinn
+    // Chatbot image taken from:
+    // https://lovepik.com/image-401570104/penguin-animal-small-avatar-illustration-design.html
     private final Image userImage = new Image(this.getClass().getResourceAsStream("/images/user.png"));
     private final Image chatbotImage = new Image(this.getClass().getResourceAsStream("/images/chatbot.png"));
 

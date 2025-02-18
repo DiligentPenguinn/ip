@@ -1,3 +1,5 @@
+/* This code is adopted from SE JavaFX tutorial:
+<a href="https://se-education.org/guides/tutorials/javaFxPart5.html">...</a> */
 .root {
     main-color: rgb(237, 255, 242);
     -fx-background-color: main-color;
