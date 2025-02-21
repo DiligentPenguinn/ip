@@ -1,26 +1,136 @@
-# Duke project template
+# DiligentPenguin User Guide
 
-This is a project template for a greenfield Java project. It's named after the Java mascot _Duke_. Given below are instructions on how to use it.
+![A screenshot of the project GUI](docs/Ui.png)
 
-## Setting up in Intellij
+Diligent Penguin is a simple and efficient chatbot application designed to
+help users manage their daily tasks.
+The chatbot enables users to add, edit, delete, and view their task list effortlessly through an interactive conversation.
 
-Prerequisites: JDK 17, update Intellij to the most recent version.
+## Features
+### Add a todo task: `todo`
+Add a new task with a description to the task list.
 
-1. Open Intellij (if you are not in the welcome screen, click `File` > `Close Project` to close the existing project first)
-1. Open the project into Intellij as follows:
-   1. Click `Open`.
-   1. Select the project directory, and click `OK`.
-   1. If there are any further prompts, accept the defaults.
-1. Configure the project to use **JDK 17** (not other versions) as explained in [here](https://www.jetbrains.com/help/idea/sdk.html#set-up-jdk).<br>
-   In the same dialog, set the **Project language level** field to the `SDK default` option.
-1. After that, locate the `src/main/java/Duke.java` file, right-click it, and choose `Run Duke.main()` (if the code editor is showing compile errors, try restarting the IDE). If the setup is correct, you should see something like the below as the output:
-   ```
-   Hello from
-    ____        _        
-   |  _ \ _   _| | _____ 
-   | | | | | | | |/ / _ \
-   | |_| | |_| |   <  __/
-   |____/ \__,_|_|\_\___|
-   ```
+**Format:**
+```
+todo <description>
+```
+**Examples:**
+```
+todo submit report
+```
 
-**Warning:** Keep the `src\main\java` folder as the root folder for Java files (i.e., don't rename those folders or move Java files to another folder outside of this folder path), as this is the default location some tools (e.g., Gradle) expect to find Java files.
+### Add a deadline task: `deadline`
+Add a new task with a description and a deadline to the task list.
+
+**Format:**
+```
+deadline <description> /by <deadline>
+```
+**Note:** The deadline format is `dd/mm/yyyy`.
+
+**Examples:**
+```
+deadline grade homework /by 19/02/2025
+```
+
+### Add an event task: `event`
+Add a new task with a description, a start time, and an end time to the task list.
+
+**Format:**
+```
+event <description> /from <start_time> /to <end_time>
+```
+**Note:** Start time and end time format is `dd/mm/yyyy`.
+
+**Examples:**
+```
+event attend hackathon /from 20/02/2025 /to 21/02/2025
+```
+
+### List all tasks: `list`
+List all pending and completed tasks.
+
+**Format:**
+```
+list
+```
+
+![A screenshot example for list](docs/listExample.png)
+
+### Mark task as completed: `mark`
+Mark a task at a given index as completed.
+
+**Format:**
+```
+mark <task_index>
+```
+**Examples:**
+```
+mark 3
+```
+
+### Mark task as uncompleted: `unmark`
+Mark a task at a given index as uncompleted.
+
+**Format:**
+```
+unmark <task_index>
+```
+**Examples:**
+```
+unmark 3
+```
+
+### Delete a task: `delete`
+Remove a completed or unnecessary task at a given index from the list.
+
+**Format:**
+```
+delete <task_index>
+```
+**Examples:**
+```
+delete 3
+```
+
+### Update a task: `update`
+Update a task at a given index from the list.  
+**Note:** You cannot change the task type.
+
+**Format 1 (Short command):**
+```
+update <task_index>
+```
+This command pre-fills your next command with a detailed update command containing the current description. You can edit the task description and send the command to perform the update.
+
+**Format 2 (Detailed command):**
+```
+update-<task_index> <task description>
+```
+This command updates the task at the given index with the new description.
+
+![A screenshot for update short command](docs/updateExample.png)  
+![A screenshot for update long command](docs/updateExample2.png)
+
+### Locate tasks by keyword: `find`
+Locate all tasks in the list that contain a given keyword.
+
+**Format:**
+```
+find <key_word>
+```
+
+![A screenshot for find command](docs/findExample.png)
+
+### Automatic Saving and Loading Data
+DiligentPenguin automatically saves the task list after each command. There is no need to save manually.  
+Once opened, DiligentPenguin automatically loads data from the previous session (if it exists).
+
+![A screenshot for save and load](docs/saveAndLoadExample.png)
+
+## Installation
+1. Ensure you have Java `17` or above installed on your computer.
+2. Download the latest `.jar` file from [here](https://github.com/DiligentPenguinn/ip/releases/tag/A-Release).
+3. Copy the file to the folder you want to use as the home folder for your DiligentPenguin chatbot.
+4. Open a command terminal, `cd` into the folder you put the `.jar` file in, and use the following command to run the application:
+   `java -jar diligentpenguin-v1.0.jar`
