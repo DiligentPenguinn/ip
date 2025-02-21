@@ -1,8 +1,4 @@
----
-layout: default
-title: DiligentPenguin User Guide
-css: style.css
----
+# DiligentPenguin User Guide
 
 ![A screenshot of the project GUI](Ui.png)
 
