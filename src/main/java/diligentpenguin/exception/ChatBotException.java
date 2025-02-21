@@ -1,7 +1,7 @@
 package diligentpenguin.exception;
 
 /**
- * Customized exception for the chatbot.
+ * Represents customized exception for the chatbot.
  * This exception is thrown when the chatbot encounters an invalid command or input.
  */
 

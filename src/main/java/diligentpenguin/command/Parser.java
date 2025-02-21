@@ -31,7 +31,7 @@ import diligentpenguin.task.ToDo;
 
 /**
  * Handles user's commands for chatbot.
- * A <code>Parser</code> object takes in user command and executes corresponding chatbot operations
+ * A <code>Parser</code> object takes in user command and executes corresponding chatbot operations.
  */
 public class Parser {
     private final DiligentPenguin diligentPenguin;
@@ -39,10 +39,11 @@ public class Parser {
     private final Storage storage;
 
     /**
-     * Constructs a parser object
-     * @param diligentPenguin Chatbot to use
-     * @param ui Ui to use
-     * @param storage Storage to use
+     * Constructs a parser object.
+     *
+     * @param diligentPenguin Chatbot to use.
+     * @param ui Ui to use.
+     * @param storage Storage to use.
      */
     public Parser(DiligentPenguin diligentPenguin, Ui ui, Storage storage) {
         this.diligentPenguin = diligentPenguin;
@@ -51,10 +52,11 @@ public class Parser {
     }
 
     /**
-     * Processes the description string into a ToDo object
-     * @param item string to process
-     * @return Processed ToDo object
-     * @throws ChatBotException If error occurs during parsing
+     * Processes the description string into a ToDo object.
+     *
+     * @param item string to process.
+     * @return Processed ToDo object.
+     * @throws ChatBotException If error occurs during parsing.
      */
     public ToDo processToDoTask(String item) throws ChatBotException {
         if (item.trim().isEmpty()) {
@@ -64,10 +66,11 @@ public class Parser {
     }
 
     /**
-     * Processes the description string into a Deadline object
-     * @param item string to process
-     * @return Processed Deadline object
-     * @throws ChatBotException If error occurs during parsing
+     * Processes the description string into a Deadline object.
+     *
+     * @param item string to process.
+     * @return Processed Deadline object.
+     * @throws ChatBotException If error occurs during parsing.
      */
     public Deadline processDeadlineTask(String item) throws ChatBotException {
         if (!item.contains("/by")) {
@@ -91,10 +94,11 @@ public class Parser {
     }
 
     /**
-     * Processes the description string into a Event object
-     * @param item string to process
-     * @return Processed Event object
-     * @throws ChatBotException If error occurs during parsing
+     * Processes the description string into a Event object.
+     *
+     * @param item string to process.
+     * @return Processed Event object.
+     * @throws ChatBotException If error occurs during parsing.
      */
     public Event processEventTask(String item) throws ChatBotException {
         if (!item.contains("/from") || !item.contains("/to")) {
@@ -127,11 +131,12 @@ public class Parser {
     }
 
     /**
-     * Process a string task into a Task object given its type
-     * @param type Type of the task
-     * @param item String to process
-     * @return Processed Task object
-     * @throws ChatBotException If error occurs during parsing
+     * Processes a string task into a Task object given its type.
+     *
+     * @param type Type of the task.
+     * @param item String to process.
+     * @return Processed Task object.
+     * @throws ChatBotException If error occurs during parsing.
      */
     public Task processTaskByType(String type, String item) throws ChatBotException {
         // Refactor based on IntelliJ's suggestion
@@ -144,8 +149,9 @@ public class Parser {
     }
 
     /**
-     * Process a bye command from the user
-     * @return Response from the chatbot
+     * Processes a bye command from the user.
+     *
+     * @return Response from the chatbot.
      */
     public String processByeCommand() {
         diligentPenguin.setOver();
@@ -153,18 +159,20 @@ public class Parser {
     }
 
     /**
-     * Process a list command from the user
-     * @return Response from the chatbot
+     * Processes a list command from the user.
+     *
+     * @return Response from the chatbot.
      */
     public String processListCommand() {
         return ui.generateListMessage(diligentPenguin.getTasks().toString());
     }
 
     /**
-     * Process a mark command from the user
-     * @param command Command to process
-     * @return Response from the chatbot
-     * @throws ChatBotException Exception occurs during the process
+     * Processes a mark command from the user.
+     *
+     * @param command Command to process.
+     * @return Response from the chatbot.
+     * @throws ChatBotException Exception occurs during the process.
      */
     public String processMarkCommand(String command) throws ChatBotException {
         // Use of Regex below is adapted from a conversation with chatGPT
@@ -183,10 +191,11 @@ public class Parser {
     }
 
     /**
-     * Process an unmark command from the user
-     * @param command Command to process
-     * @return Response from the chatbot
-     * @throws ChatBotException Exception occurs during the process
+     * Processes an unmark command from the user.
+     *
+     * @param command Command to process.
+     * @return Response from the chatbot.
+     * @throws ChatBotException Exception occurs during the process.
      */
     public String processUnmarkCommand(String command) throws ChatBotException {
         if (!command.matches("unmark \\d+")) {
@@ -204,10 +213,11 @@ public class Parser {
     }
 
     /**
-     * Process a delete command from the user
-     * @param command Command to process
-     * @return Response from the chatbot
-     * @throws ChatBotException Exception occurs during the process
+     * Processes a delete command from the user.
+     *
+     * @param command Command to process.
+     * @return Response from the chatbot.
+     * @throws ChatBotException Exception occurs during the process.
      */
     public String processDeleteCommand(String command) throws ChatBotException {
         if (!command.matches("delete \\d+")) {
@@ -226,10 +236,11 @@ public class Parser {
     }
 
     /**
-     * Process an update command from the user of the form update {index}
-     * @param command Command to process
-     * @return Response from the chatbot as well as pre-typed output for the user
-     * @throws ChatBotException Exception occurs during the process
+     * Processes an update command from the user of the form update {index}.
+     *
+     * @param command Command to process.
+     * @return Response from the chatbot as well as pre-typed output for the user.
+     * @throws ChatBotException Exception occurs during the process.
      */
     public String[] processShortUpdateCommand(String command) throws ChatBotException {
         if (!command.matches("update \\d+")) {
@@ -248,10 +259,11 @@ public class Parser {
     }
 
     /**
-     * Process a detailed command from the user
-     * @param command Command to process
-     * @return Response from the chatbot
-     * @throws ChatBotException Exception occurs during the process
+     * Processes a detailed command from the user.
+     *
+     * @param command Command to process.
+     * @return Response from the chatbot.
+     * @throws ChatBotException Exception occurs during the process.
      */
     public String processDetailedUpdateCommand(String command) throws ChatBotException {
         String regex = "^update-(\\d+) (.+)";
@@ -277,10 +289,11 @@ public class Parser {
     }
 
     /**
-     * Process general update commands (either short or detailed)
-     * @param command Command to process
-     * @return strings of response and pre-typed output for the user
-     * @throws ChatBotException Exceptions occur durring the process
+     * Processes general update commands (either short or detailed).
+     *
+     * @param command Command to process.
+     * @return strings of response and pre-typed output for the user.
+     * @throws ChatBotException Exceptions occur during the process.
      */
     public String[] processUpdateCommand(String command) throws ChatBotException {
         if (command.length() == 4) {
@@ -296,9 +309,10 @@ public class Parser {
     }
 
     /**
-     * Process a find command from the user
-     * @param command Command to process
-     * @return Response from the chatbot
+     * Processes a find command from the user.
+     *
+     * @param command Command to process.
+     * @return Response from the chatbot.
      */
     public String processFindCommand(String command) throws ChatBotException {
         int lengthOfFind = 4;
@@ -315,9 +329,10 @@ public class Parser {
     }
 
     /**
-     * Process a todo command from the user
-     * @param command Command to process
-     * @return Response from the chatbot
+     * Processes a todo command from the user.
+     *
+     * @param command Command to process.
+     * @return Response from the chatbot.
      */
     public String processToDoCommand(String command) throws ChatBotException {
         int todoLength = "todo".length();
@@ -332,9 +347,10 @@ public class Parser {
     }
 
     /**
-     * Process a deadline command from the user
-     * @param command Command to process
-     * @return Response from the chatbot
+     * Processes a deadline command from the user.
+     *
+     * @param command Command to process.
+     * @return Response from the chatbot.
      */
     public String processDeadlineCommand(String command) throws ChatBotException {
         int deadlineLength = "deadline".length();
@@ -349,9 +365,10 @@ public class Parser {
     }
 
     /**
-     * Process an event command from the user
-     * @param command Command to process
-     * @return Response from the chatbot
+     * Processes an event command from the user.
+     *
+     * @param command Command to process.
+     * @return Response from the chatbot.
      */
     public String processEventCommand(String command) throws ChatBotException {
         int eventLength = "event".length();
@@ -367,10 +384,11 @@ public class Parser {
 
 
     /**
-     * Parse and execute the user command
-     * @param command Command to parse and execute
-     * @return The response from Ui
-     * @throws ChatBotException If error occurs while parsing and executing
+     * Parses and executes the user command.
+     *
+     * @param command Command to parse and execute.
+     * @return The response from Ui.
+     * @throws ChatBotException If error occurs while parsing and executing.
      */
     public String[] parse(String command) throws ChatBotException {
         String response = "";

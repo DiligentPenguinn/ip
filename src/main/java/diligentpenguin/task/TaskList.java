@@ -14,17 +14,19 @@ public class TaskList {
     }
 
     /**
-     * Add a task to the list
-     * @param task Task to add
+     * Adds a task to the list.
+     *
+     * @param task Task to add.
      */
     public void add(Task task) {
         this.list.add(task);
     }
 
     /**
-     * Find the matching tasks given the keyword
-     * @param keyword The keyword to match
-     * @return The list of matching tasks
+     * Finds the matching tasks given the keyword.
+     *
+     * @param keyword The keyword to match.
+     * @return The list of matching tasks.
      */
     public TaskList find(String keyword) {
         assert (keyword != null) : "keyword to find should not be null!";
@@ -38,66 +40,74 @@ public class TaskList {
     }
 
     /**
-     * Remove a task from the list
-     * @param i Index of task to remove
+     * Removes a task from the list.
+     *
+     * @param i Index of task to remove.
      */
     public void remove(int i) {
         this.list.remove(i);
     }
 
     /**
-     * Check if the list is empty
-     * @return True if the list is empty, otherwise False
+     * Checks if the list is empty.
+     *
+     * @return True if the list is empty, otherwise False.
      */
     public Boolean isEmpty() {
         return this.list.isEmpty();
     }
 
     /**
-     * Get a task from the list by index
-     * @param i Index of the task
-     * @return The task from the specified index
+     * Gets a task from the list by index.
+     *
+     * @param i Index of the task.
+     * @return The task from the specified index.
      */
     public Task get(int i) {
         return this.list.get(i);
     }
 
     /**
-     * Set a task in the given index
-     * @param i index to set
-     * @param task Task to set to the given index
+     * Sets a task in the given index.
+     *
+     * @param i index to set.
+     * @param task Task to set to the given index.
      */
     public void set(int i, Task task) {
         this.list.set(i, task);
     }
 
     /**
-     * Mark a task in the list as completed
-     * @param i Index of the task to mark
+     * Marks a task in the list as completed.
+     *
+     * @param i Index of the task to mark.
      */
     public void finish(int i) {
         this.list.get(i).setDone();
     }
 
     /**
-     * Mark a task in the list as uncompleted
-     * @param i Index of the task to mark
+     * Marks a task in the list as uncompleted.
+     *
+     * @param i Index of the task to mark.
      */
     public void unfinish(int i) {
         this.list.get(i).setUnDone();
     }
 
     /**
-     * Get the number of tasks in the list
-     * @return Number of tasks in the list
+     * Gets the number of tasks in the list.
+     *
+     * @return Number of tasks in the list.
      */
     public int getSize() {
         return this.list.size();
     }
 
     /**
-     * Get all tasks in the list
-     * @return An <code>ArrayList</code> of tasks
+     * Gets all tasks in the list.
+     *
+     * @return An <code>ArrayList</code> of tasks.
      */
     public ArrayList<Task> getAllTasks() {
         return this.list;
@@ -105,6 +115,7 @@ public class TaskList {
 
     /**
      * Returns a string representation of the task list.
+     *
      * @return A formatted string representing all tasks in the list.
      */
     @Override
@@ -117,7 +128,7 @@ public class TaskList {
     }
 
     /**
-     * Represents different types of task that can be created
+     * Represents different types of task that can be created.
      */
     public enum TaskType {
         TODO, DEADLINE, EVENT

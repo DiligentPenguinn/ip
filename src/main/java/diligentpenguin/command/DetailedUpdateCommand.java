@@ -1,7 +1,7 @@
 package diligentpenguin.command;
 
 /**
- * Represents the detailed update command, contains command format information
+ * Represents the detailed update command, contains command format information.
  */
 public class DetailedUpdateCommand extends Command {
     public static String getCommandInfo() {

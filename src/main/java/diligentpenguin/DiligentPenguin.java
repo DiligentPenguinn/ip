@@ -7,7 +7,7 @@ import diligentpenguin.task.TaskList;
 
 /**
  * Represents the chatbot.
- * A <code>DiligentPenguin</code> object handles user input, manage tasks, storages and responses
+ * A <code>DiligentPenguin</code> object handles user input, manage tasks, storages and responses.
  */
 
 public class DiligentPenguin {
@@ -19,9 +19,10 @@ public class DiligentPenguin {
     private boolean isOver = false;
 
     /**
-     * Construct a new <code>DiligentPenguin</code> chatbot.
-     * @param directoryPath Directory path where task data is stored
-     * @param fileName Name of the file where task data is stored
+     * Constructs a new <code>DiligentPenguin</code> chatbot.
+     *
+     * @param directoryPath Directory path where task data is stored.
+     * @param fileName Name of the file where task data is stored.
      */
     public DiligentPenguin(String directoryPath, String fileName) {
         assert directoryPath != null : "Directory path should not be null!";
@@ -45,7 +46,7 @@ public class DiligentPenguin {
     }
 
     /**
-     * Return the tasks noted by the chatbot
+     * Returns the tasks noted by the chatbot.
      * @return <code>TaskList</code> of tasks
      */
     public TaskList getTasks() {
@@ -60,7 +61,7 @@ public class DiligentPenguin {
         this.isOver = true;
     }
     /**
-     * Run the chatbot, handle user inputs and responses.
+     * Runs the chatbot, handle user inputs and responses.
      */
     public String run() {
         String message = "";

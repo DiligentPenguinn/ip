@@ -4,7 +4,7 @@ import java.time.format.DateTimeFormatter;
 
 /**
  * Represents a task given by the user.
- * A <code>Task</code> object has a name, a completion status and a type
+ * A <code>Task</code> object has a name, a completion status and a type.
  */
 public class Task {
     private static final String INPUT_DATE_TIME_STRING = "dd/MM/yyyy";
@@ -17,8 +17,9 @@ public class Task {
 
     /**
      * Constructs a new <code>Task</code> object with the specified name and type.
-     * @param name The name of the task
-     * @param type The type of the task
+     *
+     * @param name The name of the task.
+     * @param type The type of the task.
      */
     public Task(String name, String type) {
         this.name = name;
@@ -26,21 +27,21 @@ public class Task {
     }
 
     /**
-     * Set the task as completed
+     * Sets the task as completed.
      */
     public void setDone() {
         this.isDone = true;
     }
 
     /**
-     * Set the task as uncompleted
+     * Sets the task as uncompleted.
      */
     public void setUnDone() {
         this.isDone = false;
     }
 
     /**
-     * @return a string represents the type of the task
+     * @return a string that represents the type of the task.
      */
     public String getType() {
         return this.type;
@@ -71,7 +72,7 @@ public class Task {
     }
 
     /**
-     * @return formatted string for printing purposes
+     * @return a formatted string for printing purposes.
      */
     @Override
     public String toString() {
@@ -80,14 +81,14 @@ public class Task {
     }
 
     /**
-     * @return a string formatted for saving purpose
+     * @return a string formatted for saving purposes.
      */
     public String toSavedString() {
         return "";
     }
 
     /**
-     * @return a string formatted for editing purpose
+     * @return a string formatted for editing purposes.
      */
     public String toEditString(int index) {
         return "";

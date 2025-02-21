@@ -3,7 +3,7 @@ package diligentpenguin.command;
 import java.time.LocalDate;
 
 /**
- * Represents event command, contains information about the command
+ * Represents event command, contains information about the command.
  */
 public class EventCommand extends Command {
     private final String description;
@@ -11,10 +11,11 @@ public class EventCommand extends Command {
     private final LocalDate endTime;
 
     /**
-     * Constructs an event object
-     * @param description Name/Description of the event
-     * @param startTime Starting time
-     * @param endTime Ending time
+     * Constructs an event object.
+     *
+     * @param description Name/Description of the event.
+     * @param startTime Starting time.
+     * @param endTime Ending time.
      */
     public EventCommand(String description, LocalDate startTime, LocalDate endTime) {
         this.description = description;

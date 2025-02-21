@@ -11,7 +11,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 /**
- * Controller for the main GUI.
+ * Represents a controller for the main GUI.
  * This class is adopted from SE JavaFX tutorial:
  * <a href="https://se-education.org/guides/tutorials/javaFxPart5.html">...</a>
  * @author Debbie Hii (@flexibo)
@@ -44,12 +44,12 @@ public class MainWindow extends AnchorPane {
         this.stage = stage;
     }
 
-    /** Injects the DiligentPenguin instance */
+    /** Injects the DiligentPenguin instance. */
     public void setDp(DiligentPenguin d) {
         diligentPenguin = d;
     }
 
-    /** Load saved data file if it exists */
+    /** Load saved data file if it exists. */
     public void initializeDp() {
         String response = diligentPenguin.run();
         dialogContainer.getChildren().addAll(

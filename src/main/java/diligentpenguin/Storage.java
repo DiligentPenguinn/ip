@@ -26,9 +26,10 @@ public class Storage {
     private String directoryPath;
 
     /**
-     * Constructs a new <code>Storage</code> object with the specified paths to directory and file
-     * @param directoryPath Path to where the data file is stored
-     * @param filePath Path to the data file
+     * Constructs a new <code>Storage</code> object with the specified paths to directory and file.
+     *
+     * @param directoryPath Path to where the data file is stored.
+     * @param filePath Path to the data file.
      */
     public Storage(String directoryPath, String filePath) {
         assert directoryPath != null : "Directory path should not be null!";
@@ -38,9 +39,10 @@ public class Storage {
     }
 
     /**
-     * Save tasks into data task file
-     * @param tasks Tasks to save
-     * @throws ChatBotException If error occurs while saving
+     * Saves tasks into data task file.
+     *
+     * @param tasks Tasks to save.
+     * @throws ChatBotException If error occurs while saving.
      */
     public void save(TaskList tasks) throws ChatBotException {
         assert tasks != null : "Task list should not be null!";
@@ -58,9 +60,10 @@ public class Storage {
     }
 
     /**
-     * Read a todo task from its description
-     * @param line Description of task to read
-     * @return The <code>ToDo</code> object
+     * Reads a todo task from its description.
+     *
+     * @param line Description of task to read.
+     * @return The <code>ToDo</code> object.
      */
     static ToDo readTodoTask(String line) {
         String[] parts = line.split("\\|");
@@ -74,9 +77,10 @@ public class Storage {
     }
 
     /**
-     * Read a deadline task from its description
-     * @param line Description of task to read
-     * @return The <code>Deadline</code> object
+     * Reads a deadline task from its description.
+     *
+     * @param line Description of task to read.
+     * @return The <code>Deadline</code> object.
      */
     static Deadline readDeadlineTask(String line) {
         assert line != null : "Line to read should not be null!";
@@ -96,10 +100,11 @@ public class Storage {
     }
 
     /**
-     * Read an event task from its description
-     * @param line Description of task to read
-     * @return The <code>Event</code> object
-     * @throws DateTimeParseException Exception occurs during parsing
+     * Reads an event task from its description.
+     *
+     * @param line Description of task to read.
+     * @return The <code>Event</code> object.
+     * @throws DateTimeParseException Exception occurs during parsing.
      */
     static Event readEventTask(String line) throws DateTimeParseException {
         assert line != null : "Line to read should not be null!";
@@ -121,11 +126,12 @@ public class Storage {
     }
 
     /**
-     * Read a task from its description
-     * @param line Description of task to read
-     * @return The <code>Task</code> object
-     * @throws ChatBotException If description format is incorrect
-     * @throws DateTimeParseException If description datetime format is incorrect
+     * Reads a task from its description.
+     *
+     * @param line Description of task to read.
+     * @return The <code>Task</code> object.
+     * @throws ChatBotException If description format is incorrect.
+     * @throws DateTimeParseException If description datetime format is incorrect.
      */
     static Task readTask(String line) throws ChatBotException, DateTimeParseException {
         assert line != null : "Line to read should not be null!";
@@ -141,10 +147,11 @@ public class Storage {
     }
 
     /**
-     * Load tasks from saved file
-     * @param tasks Task to load
-     * @throws ChatBotException If no data is found
-     * @throws FileNotFoundException If saved file is not found
+     * Loads tasks from saved file.
+     *
+     * @param tasks Task to load.
+     * @throws ChatBotException If no data is found.
+     * @throws FileNotFoundException If saved file is not found.
      */
     public void loadTaskList(TaskList tasks) throws ChatBotException {
         assert tasks != null : "Task list to load should not be null!";
@@ -171,7 +178,7 @@ public class Storage {
     }
 
     /**
-     * Create a directory and file for saving task data if they don't exist
+     * Creates a directory and file for saving task data if they don't exist.
      */
     public void createSavedDirectoryAndFile() {
         File directory = new File(this.directoryPath);

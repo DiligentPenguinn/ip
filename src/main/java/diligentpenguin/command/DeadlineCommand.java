@@ -3,16 +3,17 @@ package diligentpenguin.command;
 import java.time.LocalDate;
 
 /**
- * Represents deadline command, contains information about the command
+ * Represents deadline command, contains information about the command.
  */
 public class DeadlineCommand extends Command {
     private final String description;
     private final LocalDate deadline;
 
     /**
-     * Constructs a deadline command object
-     * @param description Name of the deadline
-     * @param deadline Deadline time
+     * Constructs a deadline command object.
+     *
+     * @param description Name of the deadline.
+     * @param deadline Deadline time.
      */
     public DeadlineCommand(String description, LocalDate deadline) {
         this.description = description;

@@ -3,7 +3,7 @@ package diligentpenguin.task;
 import java.time.LocalDate;
 
 /**
- * Represent a task with specific start time and end time.
+ * Represents a task with specific start time and end time.
  * In addition to <code>Task</code> object's attributes, a <code>Event</code> object has
  * a start time and end time.
  */
@@ -13,9 +13,10 @@ public class Event extends Task {
 
     /**
      * Constructs a new <code>Event</code> task with the specified name, starting and ending time.
-     * @param name The name of the event
-     * @param startTime The event's starting time
-     * @param endTime The event's ending time
+     *
+     * @param name The name of the event.
+     * @param startTime The event's starting time.
+     * @param endTime The event's ending time.
      */
     public Event(String name, LocalDate startTime, LocalDate endTime) {
         super(name, "E");

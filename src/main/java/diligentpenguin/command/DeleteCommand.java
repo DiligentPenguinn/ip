@@ -1,7 +1,7 @@
 package diligentpenguin.command;
 
 /**
- * Represents deadline command, contains information about the command
+ * Represents deadline command, contains information about the command.
  */
 public class DeleteCommand extends Command {
     private final int index;

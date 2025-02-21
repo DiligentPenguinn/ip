@@ -3,7 +3,7 @@ package diligentpenguin.exception;
 import diligentpenguin.command.DeleteCommand;
 
 /**
- * Represents exceptions related to delete command
+ * Represents exceptions related to delete command.
  */
 public class DeleteException extends ChatBotException {
     private static final String MESSAGE = "Something is wrong with your delete command! \n"

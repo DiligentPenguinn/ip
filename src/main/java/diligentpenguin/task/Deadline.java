@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 /**
  * Represents a task with a specific deadline.
- * A <code>Deadline</code> object has a due date in adition to <code>Task</code> object
+ * A <code>Deadline</code> object has a due date in adition to <code>Task</code> object.
  */
 public class Deadline extends Task {
     private LocalDate deadline;

@@ -2,7 +2,7 @@ package diligentpenguin.task;
 
 
 /**
- * Represent a todo task. A <code>ToDo</code> object has all attributes of a <code>Task</code> object.
+ * Represents a todo task. A <code>ToDo</code> object has all attributes of a <code>Task</code> object.
  */
 public class ToDo extends Task {
     public ToDo(String name) {

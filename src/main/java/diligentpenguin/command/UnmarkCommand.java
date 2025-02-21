@@ -1,7 +1,7 @@
 package diligentpenguin.command;
 
 /**
- * Represents unmark command, contains information about the command
+ * Represents unmark command, contains information about the command.
  */
 public class UnmarkCommand extends Command {
     private final int index;

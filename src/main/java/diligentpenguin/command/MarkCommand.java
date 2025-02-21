@@ -1,7 +1,7 @@
 package diligentpenguin.command;
 
 /**
- * Represents mark command, contains information about the command
+ * Represents mark command, contains information about the command.
  */
 public class MarkCommand extends Command {
     private final int index;
