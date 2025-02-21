@@ -160,6 +160,7 @@ public class Storage {
         try {
             scanner = new Scanner(file);
         } catch (FileNotFoundException e) {
+            createSavedDirectoryAndFile();
             throw new ChatBotException("File not found!");
         }
         String taskDescription = "";

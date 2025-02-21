@@ -54,6 +54,7 @@ application {
 
 shadowJar {
     archiveBaseName = "diligentpenguin"
+    archiveVersion = "v1.0"
     archiveClassifier = null
 }
 
