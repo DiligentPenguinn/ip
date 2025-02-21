@@ -1,6 +1,7 @@
 # DiligentPenguin Chatbot User Guide
-
-![A screenshot of the project GUI](Ui.png)
+<div style="text-align: center;">
+<img src=Ui.png alt="A screenshot of the project GUI" width="250">
+</div>
 
 Diligent Penguin is a simple and efficient chatbot application designed to 
 help users manage their daily tasks. 
@@ -43,7 +44,9 @@ List all pending and completed tasks.
 
 Format: `list`
 
-![An example](listExample.png)
+<div style="text-align: center;">
+<img src=listExample.png alt="A screenshot example for list" width="250">
+</div>
 
 ### Mark task as completed: `mark`
 Mark a task at a given index as completed
@@ -88,9 +91,13 @@ This command updates the task at the given index with the new description
 
 Examples:
 
-![An example for short command](updateExample.png)
+<div style="text-align: center;">
+<img src=updateExample.png alt="A screenshot for update short command" width="250">
+</div>
 
-![An example for long command](updateExample2.png)
+<div style="text-align: center;">
+<img src=updateExample2.png alt="A screenshot for update long command" width="250">
+</div>
 
 ### Locate tasks by keyword: `find`
 Locate all tasks in the list that contain a given keyword
@@ -99,7 +106,9 @@ Format: `find <key_word>`
 
 Examples:
 
-![An example of find command](findExample.png)
+<div style="text-align: center;">
+<img src="findExample.png" alt="A screenshot for find command" width="250">
+</div>
 
 ### Automatic Saving and loading data
 DiligentPenguin automatically saves the task list after each command. There is no need to save manually
@@ -108,7 +117,9 @@ Once opened, DiligentPenguin automatically loads data from previous session (if 
 
 Examples:
 
-![An example of automatic save and load](saveAndLoadExample.png)
+<div style="text-align: center;">
+<img src="saveAndLoadExample.png" alt="A screenshot for save and load" width="250">
+</div>
 
 ## Installation
 1. Ensure you have Java `17` or above installed in your Computer.
